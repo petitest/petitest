@@ -16,6 +16,18 @@ module Petitest
         descendants << sub_class
       end
 
+    # @return [Array<Petit::TestCase]
+      def test_cases
+        descendants.flat_map do |test_group_class|
+          test_group_class.test_methods.map do |test_method|
+            ::Petitest::TestCase.new(
+              test_group_class: test_group_class,
+              test_method: test_method,
+            )
+          end
+        end
+      end
+
       # @return [Array<String>]
       def test_method_names
         public_instance_methods.map(&:to_s).select do |method_name|
