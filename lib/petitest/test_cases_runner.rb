@@ -1,7 +1,7 @@
 module Petitest
-  class AutoRunner
+  class TestCasesRunner
     class << self
-      # @return [Petitest::AutoRunner]
+      # @return [Petitest::TestCasesRunner]
       def singleton
         @singleton ||= new
       end
