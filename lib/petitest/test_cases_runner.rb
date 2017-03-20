@@ -1,10 +1,11 @@
 module Petitest
   class TestCasesRunner
-    class << self
-      # @return [Petitest::TestCasesRunner]
-      def singleton
-        @singleton ||= new
-      end
+    # @return [Array<Petitest::TestCase>]
+    attr_reader :test_cases
+
+    # @param test_cases [Array<Petitest::TestCase>]
+    def initialize(test_cases)
+      @test_cases = test_cases
     end
 
     # @return [Boolean]
@@ -22,11 +23,6 @@ module Petitest
     # @return [Petitest::Reporters::BaseReporter]
     def reporter
       @reporter ||= ::Petitest::Reporters::DotReporter.new
-    end
-
-    # @return [Array<Petitest::TestCase>]
-    def test_cases
-      @test_cases ||= ::Petitest::TestCasesCollector.singleton.collect
     end
   end
 end
