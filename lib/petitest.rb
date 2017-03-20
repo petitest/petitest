@@ -1,3 +1,6 @@
 require "petitest/auto_runner"
+require "petitest/test_case"
+require "petitest/test_case_collector"
 require "petitest/test_group"
+require "petitest/test_method"
 require "petitest/version"

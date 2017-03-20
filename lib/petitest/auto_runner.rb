@@ -7,9 +7,14 @@ module Petitest
       end
     end
 
-    # @todo
+    # @return [Boolean]
     def run
-      puts "#{self.class}##{__method__}"
+      test_cases.all?(&:run)
+    end
+
+    # @return [Array<Petitest::TestCase>]
+    def test_cases
+      @test_cases ||= ::Petitest::TestCaseCollector.new.collect
     end
   end
 end
