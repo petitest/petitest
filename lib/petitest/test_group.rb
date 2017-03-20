@@ -16,22 +16,18 @@ module Petitest
         descendants << sub_class
       end
 
-      # @note Override
-      def method_added(method_name)
-        super
-        if method_name.to_s.start_with?(TEST_METHOD_NAME_PREFIX)
-          caller_location = caller_locations(1, 1)[0]
-          test_methods << ::Petitest::TestMethod.new(
-            line_number: caller_location.lineno,
-            method_name: method_name.to_s,
-            path: ::File.expand_path(caller_location.absolute_path || caller_location.path)
-          )
-        end
-      end
-
       # @return [Array<Petitest::TestMethod>]
       def test_methods
-        @test_methods ||= []
+        public_instance_methods.map(&:to_s).select do |method_name|
+          method_name.start_with?(TEST_METHOD_NAME_PREFIX)
+        end.map do |method_name|
+          unbound_method = public_instance_method(method_name)
+          ::Petitest::TestMethod.new(
+            line_number: unbound_method.source_location[1],
+            method_name: method_name.to_s,
+            path: unbound_method.source_location[0],
+          )
+        end
       end
     end
   end
