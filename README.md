@@ -38,11 +38,11 @@ class FooTest < Petitest::TestGroup
   end
 
   def test_bar
-    assert_equal(foo.bar, "bar")
+    assert_equal("bar", foo.bar)
   end
 
   def test_baz
-    assert_equal(foo.baz, "baz")
+    assert_equal("baz", foo.baz)
   end
 end
 ```
