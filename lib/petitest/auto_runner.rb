@@ -15,7 +15,7 @@ module Petitest
 
     # @return [Array<Petitest::TestCase>]
     def test_cases
-      @test_cases ||= ::Petitest::TestCaseCollector.new.collect
+      @test_cases ||= ::Petitest::TestCaseCollector.singleton.collect
     end
   end
 end

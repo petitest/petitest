@@ -1,5 +1,11 @@
 module Petitest
   class TestCaseCollector
+    class << self
+      def singleton
+        @singleton ||= new
+      end
+    end
+
     # @return [Array<Petit::TestCase]
     def collect
       ::Petitest::TestGroup.descendants.flat_map do |test_group_class|
