@@ -1,5 +1,5 @@
 module Petitest
-  class TestCaseCollector
+  class TestCasesCollector
     class << self
       def singleton
         @singleton ||= new
