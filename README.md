@@ -26,7 +26,7 @@ gem install petitest
 
 ### 1. Write test cases
 
-Define children of `Petitest::TestGroup` with `#test_xxx` methods in `test/**/*_test.rb`:
+Define a child class of `Petitest::TestGroup` with `#test_xxx` methods.
 
 ```ruby
 # test/foo_test.rb
