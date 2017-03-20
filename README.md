@@ -29,20 +29,28 @@ gem install petitest
 Define a child class of `Petitest::TestGroup` with `#test_xxx` methods.
 
 ```ruby
-# test/foo_test.rb
+# test/some_test.rb
 require "petitest/autorun"
 
-class FooTest < Petitest::TestGroup
-  def foo
-    ::Foo.new
+class SomeTest < Petitest::TestGroup
+  def test_empty_string
+    assert("")
   end
 
-  def test_bar
-    assert_equal("bar", foo.bar)
+  def test_false
+    assert(false)
   end
 
-  def test_baz
-    assert_equal("baz", foo.baz)
+  def test_nil
+    assert(nil)
+  end
+
+  def test_true
+    assert(true)
+  end
+
+  def test_zero
+    assert(0)
   end
 end
 ```
@@ -52,5 +60,17 @@ end
 Run your test file as a Ruby script:
 
 ```bash
-ruby test/foo_test.rb
+ruby test/some_test.rb
+```
+
+```
+.FF..
+
+Failures:
+
+  1) false is not truthy
+
+  2) nil is not truthy
+
+5 tests, 2 falures
 ```

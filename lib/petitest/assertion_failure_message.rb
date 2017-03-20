@@ -20,7 +20,16 @@ module Petitest
 
     # @note Override
     def to_s
-      template % template_variables
+      template % inspected_template_variables
+    end
+
+    private
+
+    # @return [Hash{Symbol => String}]
+    def inspected_template_variables
+      template_variables.map do |key, value|
+        [key, value.inspect]
+      end.to_h
     end
   end
 end

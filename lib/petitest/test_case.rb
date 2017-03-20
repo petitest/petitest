@@ -15,8 +15,29 @@ module Petitest
       test_group_class:,
       test_method:
     )
+      @processed = false
       @test_group_class = test_group_class
       @test_method = test_method
+    end
+
+    # @return [Boolean]
+    def failed?
+      processed? && !error.nil?
+    end
+
+    # @return [Boolean]
+    def failed_by_assertion?
+      failed? && error.is_a?(::Petitest::AssertionFailureError)
+    end
+
+    # @return [Boolean]
+    def passed?
+      processed? && error.nil?
+    end
+
+    # @return [Boolean]
+    def processed?
+      @processed
     end
 
     def run
@@ -25,6 +46,8 @@ module Petitest
     rescue => error
       self.error = error
       false
+    ensure
+      @processed = true
     end
   end
 end
