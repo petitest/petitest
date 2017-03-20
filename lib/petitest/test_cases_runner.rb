@@ -17,6 +17,7 @@ module Petitest
         reporter.after_running_test_case(test_case)
       end
       reporter.after_running_test_cases(test_cases)
+      test_cases.map(&:error).all?(&:nil?)
     end
 
     # @todo
