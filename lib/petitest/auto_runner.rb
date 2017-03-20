@@ -9,7 +9,8 @@ module Petitest
 
     # @return [Boolean]
     def run
-      test_cases.all?(&:run)
+      test_cases.each(&:run)
+      p test_cases
     end
 
     # @return [Array<Petitest::TestCase>]

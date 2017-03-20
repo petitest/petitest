@@ -1,5 +1,7 @@
 module Petitest
   class TestGroup
+    include ::Petitest::Assertions
+
     TEST_METHOD_NAME_PREFIX = "test_"
 
     class << self

@@ -1,5 +1,8 @@
 module Petitest
   class TestCase
+    # @return [StandardError, nil]
+    attr_accessor :error
+
     # @return [Class]
     attr_reader :test_group_class
 
@@ -18,6 +21,10 @@ module Petitest
 
     def run
       test_group_class.new.send(test_method.method_name)
+      true
+    rescue => error
+      self.error = error
+      false
     end
   end
 end
