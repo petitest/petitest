@@ -1,8 +1,8 @@
-require "petitest/reporters/null_reporter"
+require "petitest/reporters/base_reporter"
 
 module Petitest
   module Reporters
-    class DotReporter < ::Petitest::Reporters::NullReporter
+    class DotReporter < ::Petitest::Reporters::BaseReporter
       # @note Override
       def after_running_test_case(test_case)
         print test_case.error ? "F" : "."
