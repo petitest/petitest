@@ -10,20 +10,51 @@ module Petitest
 
     # @return [Boolean]
     def run
-      reporter.before_running_test_cases(test_cases)
+      before_running_test_cases(test_cases)
       test_cases.each do |test_case|
-        reporter.before_running_test_case(test_case)
+        before_running_test_case(test_case)
         test_case.run
-        reporter.after_running_test_case(test_case)
+        after_running_test_case(test_case)
       end
-      reporter.after_running_test_cases(test_cases)
-      test_cases.map(&:error).all?(&:nil?)
+      after_running_test_cases(test_cases)
+      test_cases.all?(&:passed?)
     end
 
-    # @todo
-    # @return [Petitest::Reporters::BaseReporter]
-    def reporter
-      @reporter ||= ::Petitest::Reporters::DotReporter.new
+    private
+
+    # @param test_case [Petitest::TestCase]
+    def after_running_test_case(test_case)
+      subscribers.each do |subscriber|
+        subscriber.after_running_test_case(test_case)
+      end
+    end
+
+    # @param test_cases [Array<Petitest::TestCase>]
+    def after_running_test_cases(test_cases)
+      subscribers.each do |subscriber|
+        subscriber.after_running_test_cases(test_cases)
+      end
+    end
+
+    # @param test_case [Petitest::TestCase]
+    def before_running_test_case(test_case)
+      subscribers.each do |subscriber|
+        subscriber.before_running_test_case(test_case)
+      end
+    end
+
+    # @param test_cases [Array<Petitest::TestCase>]
+    def before_running_test_cases(test_cases)
+      subscribers.each do |subscriber|
+        subscriber.before_running_test_cases(test_cases)
+      end
+    end
+
+    # @return [Array<Petitest::Subscribers::BaseSubscriber>]
+    def subscribers
+      @subscribers ||= [
+        ::Petitest::Subscribers::DotReportSubscriber.new,
+      ]
     end
   end
 end

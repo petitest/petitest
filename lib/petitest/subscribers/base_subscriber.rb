@@ -1,6 +1,6 @@
 module Petitest
-  module Reporters
-    class BaseReporter
+  module Subscribers
+    class BaseSubscriber
       # @param test_case [Petit::TestCase]
       def after_running_test_case(test_case)
       end

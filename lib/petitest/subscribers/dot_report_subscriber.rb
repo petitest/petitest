@@ -1,8 +1,8 @@
-require "petitest/reporters/base_reporter"
+require "petitest/subscribers/base_subscriber"
 
 module Petitest
-  module Reporters
-    class DotReporter < ::Petitest::Reporters::BaseReporter
+  module Subscribers
+    class DotReportSubscriber < ::Petitest::Subscribers::BaseSubscriber
       # @note Override
       def after_running_test_case(test_case)
         print TestCaseResultReport.new(test_case)
