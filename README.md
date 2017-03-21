@@ -1,5 +1,8 @@
 # Petitest
 
+[![Gem Version](https://badge.fury.io/rb/petitest.svg)](https://rubygems.org/gems/petitest)
+[![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](http://www.rubydoc.info/github/r7kamura/petitest)
+
 A minimal solid testing framework for Ruby.
 
 ## Installation
