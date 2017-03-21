@@ -69,8 +69,14 @@ ruby test/some_test.rb
 Failures:
 
   1) false is not truthy
+    # test/some_test.rb:9:in `test_false'
 
   2) nil is not truthy
+    # test/some_test.rb:13:in `test_nil'
+
+Started:  2017-03-21 09:47:13 +0900
+Finished: 2017-03-21 09:47:13 +0900
+Total:    0.000s
 
 5 tests, 2 falures
 ```
