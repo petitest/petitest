@@ -32,7 +32,7 @@ Define a child class of `Petitest::TestGroup` with `#test_xxx` methods.
 # test/some_test.rb
 require "petitest/autorun"
 
-class SomeTest < Petitest::TestGroup
+class Sometest < Petitest::TestGroup
   def test_empty_string
     assert("")
   end
@@ -43,6 +43,10 @@ class SomeTest < Petitest::TestGroup
 
   def test_nil
     assert(nil)
+  end
+
+  def test_raise
+    raise
   end
 
   def test_true
@@ -60,23 +64,42 @@ end
 Run your test file as a Ruby script:
 
 ```bash
-ruby test/some_test.rb
+ruby test/sometest_test.rb
 ```
 
 ```
-.FF..
+.FFE..
 
 Failures:
 
-  1) false is not truthy
-    # test/some_test.rb:9:in `test_false'
+  1) Sometest#test_false
+    assert(false)
+    false is not truthy
+    # test/sometest_test.rb:9:in `test_false'
 
-  2) nil is not truthy
-    # test/some_test.rb:13:in `test_nil'
+  2) Sometest#test_nil
+    assert(nil)
+    nil is not truthy
+    # test/sometest_test.rb:13:in `test_nil'
 
-Started:  2017-03-21 09:47:13 +0900
-Finished: 2017-03-21 09:47:13 +0900
-Total:    0.000s
+Errors:
 
-5 tests, 2 falures
+  1) Sometest#test_raise
+    raise
+    RuntimeError:
+    # test/sometest_test.rb:17:in `test_raise'
+
+Counts:
+
+  6 tests
+  3 passes
+  2 failures
+  1 errors
+  0 skips
+
+Times:
+
+  Started:  2017-03-22T05:40:32.846640+09:00
+  Finished: 2017-03-22T05:40:32.846784+09:00
+  Total:    0.000144s
 ```
