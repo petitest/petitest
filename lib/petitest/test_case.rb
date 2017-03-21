@@ -3,6 +3,12 @@ module Petitest
     # @return [StandardError, nil]
     attr_accessor :error
 
+    # @return [Time, nil]
+    attr_accessor :finished_at
+
+    # @return [Time, nil]
+    attr_accessor :started_at
+
     # @return [Class]
     attr_reader :test_group_class
 
@@ -22,6 +28,7 @@ module Petitest
       test_group_class:,
       test_method:
     )
+      @duration = nil
       @processed = false
       @test_group_class = test_group_class
       @test_method = test_method
@@ -34,8 +41,22 @@ module Petitest
 
     # @return [Array<String>, nil]
     def backtrace
-      if failed?
+      if has_error?
         error.backtrace
+      end
+    end
+
+    # @return [String, nil]
+    def error_class_name
+      if aborted?
+        error.class.to_s
+      end
+    end
+
+    # @return [String, nil]
+    def error_message
+      if aborted?
+        error.to_s
       end
     end
 
@@ -79,12 +100,14 @@ module Petitest
     end
 
     def run
+      self.started_at = ::Time.now
       test_group_class.new.send(test_method.method_name)
       true
     rescue => error
       self.error = error
       false
     ensure
+      @finished_at = ::Time.now
       @processed = true
     end
 

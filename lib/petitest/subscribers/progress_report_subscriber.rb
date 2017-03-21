@@ -2,7 +2,7 @@ require "petitest/subscribers/timer_subscriber"
 
 module Petitest
   module Subscribers
-    class DotReportSubscriber < ::Petitest::Subscribers::TimerSubscriber
+    class ProgressReportSubscriber < ::Petitest::Subscribers::TimerSubscriber
       # @note Override
       def after_running_test_case(test_case)
         super
@@ -39,7 +39,7 @@ module Petitest
           when test_case.failed?
             "F"
           when test_case.skipped?
-            "S"
+            "*"
           else
             "."
           end
@@ -73,19 +73,66 @@ module Petitest
         def to_s
           [
             failures_section,
-            time_section,
-            statistics_section,
+            times_section,
+            counts_section,
           ].join("\n\n")
         end
 
         private
 
+        # @return [Integer]
+        def count_of_aborted_test_cases
+          test_cases.select(&:aborted?).length
+        end
+
+        # @return [Integer]
+        def count_of_failed_test_cases
+          test_cases.select(&:failed?).length
+        end
+
+        # @return [Integer]
+        def count_of_skipped_test_cases
+          test_cases.select(&:skipped?).length
+        end
+
+        # @return [Integer]
+        def count_of_test_cases
+          test_cases.length
+        end
+
+        # @return [String]
+        def counts_body
+          [
+            "%6d tests" % count_of_test_cases,
+            "%6d falures" % count_of_failed_test_cases,
+            "%6d errors" % count_of_aborted_test_cases,
+            "%6d skips" % count_of_skipped_test_cases,
+          ].join("\n")
+        end
+
+        # @return [String]
+        def counts_heading
+          "Counts:"
+        end
+
+        # @return [String]
+        def counts_section
+          [
+            counts_heading,
+            indent(counts_body, 2),
+          ].join("\n\n")
+        end
+
         # @return [String]
         def failures_body
           test_cases.select(&:failed?).map.with_index do |test_case, index|
             number = index + 1
-            backtrace = test_case.filtered_backtrace.join("\n").gsub(/^/, "# ")
-            indent("#{number}) #{test_case.failure_message}\n#{indent(backtrace, 2)}", 2)
+            failure_heading = "#{number}) #{test_case.failure_message}"
+            failure_body = test_case.filtered_backtrace.join("\n").gsub(/^/, "# ")
+            [
+              failure_heading,
+              indent(failure_body, 2),
+            ].join("\n")
           end.join("\n\n")
         end
 
@@ -98,7 +145,7 @@ module Petitest
         def failures_section
           [
             failures_heading,
-            failures_body,
+            indent(failures_body, 2),
           ].join("\n\n")
         end
 
@@ -110,21 +157,25 @@ module Petitest
         end
 
         # @return [String]
-        def statistics_section
-          [
-            "#{test_cases.length} tests",
-            "#{test_cases.select(&:aborted?).length} errors",
-            "#{test_cases.select(&:failed?).length} falures",
-            "#{test_cases.select(&:skipped?).length} skips",
-          ].join(", ")
-        end
-
-        def time_section
+        def times_body
           [
             "Started:  #{started_at.iso8601(3)}",
             "Finished: #{finished_at.iso8601(3)}",
-            "Total:    %.3fs" % (finished_at - started_at),
+            "Total:    %.6fs" % (finished_at - started_at),
           ].join("\n")
+        end
+
+        # @return [String]
+        def times_heading
+          "Times:"
+        end
+
+        # @return [String]
+        def times_section
+          [
+            times_heading,
+            indent(times_body, 2),
+          ].join("\n\n")
         end
       end
     end
