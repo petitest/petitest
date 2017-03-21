@@ -52,9 +52,7 @@ module Petitest
 
     # @return [Array<Petitest::Subscribers::BaseSubscriber>]
     def subscribers
-      @subscribers ||= [
-        ::Petitest::Subscribers::ProgressReportSubscriber.new,
-      ]
+      ::Petitest.configuration.subscribers
     end
   end
 end
