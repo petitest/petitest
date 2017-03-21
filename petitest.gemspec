@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ["Ryo Nakamura"]
   spec.email = ["r7kamura@gmail.com"]
   spec.summary = "A minimal solid testing framework for Ruby."
-  spec.homepage = "https://github.com/r7kamura/petitest"
+  spec.homepage = "https://github.com/petitest/petitest"
   spec.license = "MIT"
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
