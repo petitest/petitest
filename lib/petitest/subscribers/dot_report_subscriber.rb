@@ -51,6 +51,13 @@ module Petitest
         # @return [Array<Petitest::TestCase>]
         attr_reader :test_cases
 
+        class << self
+          # @return [String]
+          def prefix_to_filter_backtrace
+            @prefix_to_filter_backtrace ||= ::File.expand_path("../../..", __FILE__)
+          end
+        end
+
         # @param finished_at [Time]
         # @param started_at [Time]
         # @param test_cases [Array<Petitest::TestCase>]
@@ -78,7 +85,13 @@ module Petitest
         # @return [String]
         def failures_body
           test_cases.select(&:failed?).map.with_index do |test_case, index|
-            indent("#{index + 1}) #{test_case.error}", 2)
+            number = index + 1
+            failure_message = test_case.error.to_s
+            filtered_backtrace = test_case.error.backtrace.reject do |line|
+              line.start_with?(self.class.prefix_to_filter_backtrace)
+            end
+            backtrace = filtered_backtrace.join("\n").gsub(/^/, "# ")
+            indent("#{number}) #{failure_message}\n#{indent(backtrace, 2)}", 2)
           end.join("\n\n")
         end
 
