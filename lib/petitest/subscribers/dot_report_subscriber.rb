@@ -33,8 +33,13 @@ module Petitest
 
         # @note Override
         def to_s
-          if test_case.failed?
+          case
+          when test_case.aborted?
+            "E"
+          when test_case.failed?
             "F"
+          when test_case.skipped?
+            "S"
           else
             "."
           end
@@ -50,13 +55,6 @@ module Petitest
 
         # @return [Array<Petitest::TestCase>]
         attr_reader :test_cases
-
-        class << self
-          # @return [String]
-          def prefix_to_filter_backtrace
-            @prefix_to_filter_backtrace ||= ::File.expand_path("../../..", __FILE__)
-          end
-        end
 
         # @param finished_at [Time]
         # @param started_at [Time]
@@ -86,12 +84,8 @@ module Petitest
         def failures_body
           test_cases.select(&:failed?).map.with_index do |test_case, index|
             number = index + 1
-            failure_message = test_case.error.to_s
-            filtered_backtrace = test_case.error.backtrace.reject do |line|
-              line.start_with?(self.class.prefix_to_filter_backtrace)
-            end
-            backtrace = filtered_backtrace.join("\n").gsub(/^/, "# ")
-            indent("#{number}) #{failure_message}\n#{indent(backtrace, 2)}", 2)
+            backtrace = test_case.filtered_backtrace.join("\n").gsub(/^/, "# ")
+            indent("#{number}) #{test_case.failure_message}\n#{indent(backtrace, 2)}", 2)
           end.join("\n\n")
         end
 
@@ -119,14 +113,16 @@ module Petitest
         def statistics_section
           [
             "#{test_cases.length} tests",
+            "#{test_cases.select(&:aborted?).length} errors",
             "#{test_cases.select(&:failed?).length} falures",
+            "#{test_cases.select(&:skipped?).length} skips",
           ].join(", ")
         end
 
         def time_section
           [
-            "Started:  #{started_at}",
-            "Finished: #{finished_at}",
+            "Started:  #{started_at.iso8601(3)}",
+            "Finished: #{finished_at.iso8601(3)}",
             "Total:    %.3fs" % (finished_at - started_at),
           ].join("\n")
         end

@@ -9,6 +9,13 @@ module Petitest
     # @return [Petitest::TestMethod]
     attr_reader :test_method
 
+    class << self
+      # @return [String]
+      def prefix_to_filter_backtrace
+        @prefix_to_filter_backtrace ||= ::File.expand_path("../..", __FILE__)
+      end
+    end
+
     # @param test_group_class [Class]
     # @param test_method [Petitest::TestMethod]
     def initialize(
@@ -20,6 +27,18 @@ module Petitest
       @test_method = test_method
     end
 
+    # @return [Boolean]
+    def aborted?
+      processed? && has_error? && !has_assertion_error?
+    end
+
+    # @return [Array<String>, nil]
+    def backtrace
+      if failed?
+        error.backtrace
+      end
+    end
+
     # @return [String, nil]
     def failure_message
       if failed?
@@ -29,12 +48,24 @@ module Petitest
 
     # @return [Boolean]
     def failed?
-      processed? && !error.nil?
+      processed? && has_assertion_error?
+    end
+
+    # @return [Array<String>, nil]
+    def filtered_backtrace
+      backtrace.reject do |line|
+        line.start_with?(self.class.prefix_to_filter_backtrace)
+      end
     end
 
     # @return [Boolean]
-    def failed_by_assertion?
-      failed? && error.is_a?(::Petitest::AssertionFailureError)
+    def has_assertion_error?
+      error.is_a?(::Petitest::AssertionFailureError)
+    end
+
+    # @return [Boolean]
+    def has_error?
+      !error.nil?
     end
 
     # @return [Boolean]
@@ -55,6 +86,12 @@ module Petitest
       false
     ensure
       @processed = true
+    end
+
+    # @todo
+    # @return [Boolean]
+    def skipped?
+      false
     end
   end
 end

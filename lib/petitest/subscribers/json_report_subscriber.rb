@@ -1,6 +1,5 @@
 require "json"
 require "petitest/subscribers/timer_subscriber"
-require "time"
 
 module Petitest
   module Subscribers
@@ -15,12 +14,14 @@ module Petitest
           },
           test_cases: test_cases.map do |test_case|
             {
-              class_name: test_case.test_group_class.to_s,
+              aborted: test_case.aborted?,
               failed: test_case.failed?,
               failure_message: test_case.failure_message,
-              line_number: test_case.test_method.line_number,
-              method_name: test_case.test_method.method_name,
-              path: test_case.test_method.path,
+              skipped: test_case.skipped?,
+              test_file_path: test_case.test_method.path,
+              test_group_class_name: test_case.test_group_class.to_s,
+              test_method_line_number: test_case.test_method.line_number,
+              test_method_name: test_case.test_method.method_name,
             }
           end,
         }

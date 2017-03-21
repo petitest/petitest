@@ -1,4 +1,5 @@
 require "petitest/subscribers/base_subscriber"
+require "time"
 
 module Petitest
   module Subscribers
