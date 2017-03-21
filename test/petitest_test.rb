@@ -13,6 +13,10 @@ class PetitestTest < Petitest::TestGroup
     assert(nil)
   end
 
+  def test_raise
+    raise
+  end
+
   def test_true
     assert(true)
   end

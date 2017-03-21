@@ -74,7 +74,7 @@ module Petitest
 
     # @return [Array<String>, nil]
     def filtered_backtrace
-      backtrace.reject do |line|
+      @filtered_backtrace ||= backtrace.reject do |line|
         line.start_with?(self.class.prefix_to_filter_backtrace)
       end
     end
@@ -115,6 +115,11 @@ module Petitest
     # @return [Boolean]
     def skipped?
       false
+    end
+
+    # @return [String]
+    def test_signature
+      [test_group_class, test_method.method_name].join("#")
     end
   end
 end
