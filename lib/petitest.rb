@@ -1,5 +1,4 @@
 require "petitest/assertion_failure_error"
-require "petitest/assertion_failure_message"
 require "petitest/assertions"
 require "petitest/configuration"
 require "petitest/subscribers/base_subscriber"

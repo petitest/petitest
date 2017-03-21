@@ -61,9 +61,16 @@ module Petitest
     end
 
     # @return [String, nil]
-    def failure_message
+    def failure_additional_message
       if failed?
-        error.to_s
+        error.additional_message
+      end
+    end
+
+    # @return [String, nil]
+    def failure_assertion_type_message
+      if failed?
+        error.assertion_type_message
       end
     end
 
@@ -74,8 +81,15 @@ module Petitest
 
     # @return [Array<String>, nil]
     def filtered_backtrace
-      @filtered_backtrace ||= backtrace.reject do |line|
-        line.start_with?(self.class.prefix_to_filter_backtrace)
+      @filtered_backtrace ||= begin
+        backtrace.reverse_each.each_with_object([]) do |line, lines|
+          if line.start_with?(::File.expand_path("../assertions.rb", __FILE__))
+            break lines
+          end
+          unless line.start_with?(self.class.prefix_to_filter_backtrace)
+            lines << line
+          end
+        end.reverse
       end
     end
 
