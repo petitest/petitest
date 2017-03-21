@@ -20,6 +20,13 @@ module Petitest
       @test_method = test_method
     end
 
+    # @return [String, nil]
+    def failure_message
+      if failed?
+        error.to_s
+      end
+    end
+
     # @return [Boolean]
     def failed?
       processed? && !error.nil?
