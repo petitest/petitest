@@ -1,19 +1,25 @@
-require "petitest/subscribers/base_subscriber"
+require "petitest/subscribers/timer_subscriber"
 
 module Petitest
   module Subscribers
-    class DotReportSubscriber < ::Petitest::Subscribers::BaseSubscriber
+    class DotReportSubscriber < ::Petitest::Subscribers::TimerSubscriber
       # @note Override
       def after_running_test_case(test_case)
+        super
         print TestCaseResultReport.new(test_case)
       end
 
       # @note Override
       def after_running_test_cases(test_cases)
+        super
         if test_cases.any?
           puts "\n\n"
         end
-        puts TestCasesResultReport.new(test_cases)
+        puts TestCasesResultReport.new(
+          finished_at: finished_at,
+          started_at: started_at,
+          test_cases: test_cases,
+        )
       end
 
       class TestCaseResultReport
@@ -36,21 +42,40 @@ module Petitest
       end
 
       class TestCasesResultReport
+        # @return [Time]
+        attr_reader :finished_at
+
+        # @return [Time]
+        attr_reader :started_at
+
         # @return [Array<Petitest::TestCase>]
         attr_reader :test_cases
 
+        # @param finished_at [Time]
+        # @param started_at [Time]
         # @param test_cases [Array<Petitest::TestCase>]
-        def initialize(test_cases)
+        def initialize(
+          finished_at:,
+          started_at:,
+          test_cases:
+        )
+          @finished_at = finished_at
+          @started_at = started_at
           @test_cases = test_cases
         end
 
         # @note Override
         def to_s
-          [failures_section, statistics_section].join("\n\n")
+          [
+            failures_section,
+            time_section,
+            statistics_section,
+          ].join("\n\n")
         end
 
         private
 
+        # @return [String]
         def failures_body
           test_cases.select(&:failed?).map.with_index do |test_case, index|
             indent("#{index + 1}) #{test_case.error}", 2)
@@ -64,7 +89,10 @@ module Petitest
 
         # @return [String]
         def failures_section
-          [failures_heading, failures_body].join("\n\n")
+          [
+            failures_heading,
+            failures_body,
+          ].join("\n\n")
         end
 
         # @param string [String]
@@ -80,6 +108,14 @@ module Petitest
             "#{test_cases.length} tests",
             "#{test_cases.select(&:failed?).length} falures",
           ].join(", ")
+        end
+
+        def time_section
+          [
+            "Started:  #{started_at}",
+            "Finished: #{finished_at}",
+            "Total:    %.3fs" % (finished_at - started_at),
+          ].join("\n")
         end
       end
     end
