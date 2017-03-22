@@ -8,6 +8,10 @@ module Petitest
       skip: :yellow,
     }
 
+    attr_writer :color_scheme
+    attr_writer :colored
+    attr_writer :subscribers
+
     # @return [Hash{Symbol => Symbol}]
     def color_scheme
       @color_scheme ||= DEFAULT_COLOR_SCHEME.dup
