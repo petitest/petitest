@@ -1,3 +1,7 @@
+## Unreleased
+
+- Fix OutputConcern bug
+
 ## v0.1.2
 
 - Add Petitest.configuration.output
