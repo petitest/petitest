@@ -106,3 +106,7 @@ Times:
   Finished: 2017-03-22T05:40:32.846784+09:00
   Total:    0.000144s
 ```
+
+## Plug-ins
+
+- https://github.com/petitest/petitest-power_assert
