@@ -24,6 +24,7 @@ module Petitest
       @color_scheme = DEFAULT_COLOR_SCHEME.dup
       @color = true
       @output = ::STDOUT
+      @output.sync = true
       @subscribers = [::Petitest::Subscribers::ProgressReportSubscriber.new]
     end
   end
