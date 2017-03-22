@@ -1,9 +1,12 @@
 require "json"
-require "petitest/subscribers/timer_subscriber"
+require "petitest/subscribers/base_subscriber"
+require "petitest/subscriber_concerns/time_concern"
 
 module Petitest
   module Subscribers
-    class JsonReportSubscriber < ::Petitest::Subscribers::TimerSubscriber
+    class JsonReportSubscriber < ::Petitest::Subscribers::BaseSubscriber
+      include ::Petitest::SubscriberConcerns::TimeConcern
+
       # @note Override
       def after_running_test_cases(test_cases)
         super

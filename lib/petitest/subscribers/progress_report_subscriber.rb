@@ -1,8 +1,11 @@
-require "petitest/subscribers/timer_subscriber"
+require "petitest/subscribers/base_subscriber"
+require "petitest/subscriber_concerns/time_concern"
 
 module Petitest
   module Subscribers
-    class ProgressReportSubscriber < ::Petitest::Subscribers::TimerSubscriber
+    class ProgressReportSubscriber < ::Petitest::Subscribers::BaseSubscriber
+      include ::Petitest::SubscriberConcerns::TimeConcern
+
       # @note Override
       def after_running_test_case(test_case)
         super

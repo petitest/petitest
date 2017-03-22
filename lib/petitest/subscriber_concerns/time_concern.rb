@@ -1,9 +1,8 @@
-require "petitest/subscribers/base_subscriber"
 require "time"
 
 module Petitest
-  module Subscribers
-    class TimerSubscriber < ::Petitest::Subscribers::BaseSubscriber
+  module SubscriberConcerns
+    module TimeConcern
       # @return [Time, nil]
       attr_accessor :finished_at
 
