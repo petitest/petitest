@@ -1,10 +1,12 @@
 require "json"
 require "petitest/subscribers/base_subscriber"
+require "petitest/subscriber_concerns/output_concern"
 require "petitest/subscriber_concerns/time_concern"
 
 module Petitest
   module Subscribers
     class JsonReportSubscriber < ::Petitest::Subscribers::BaseSubscriber
+      include ::Petitest::SubscriberConcerns::OutputConcern
       include ::Petitest::SubscriberConcerns::TimeConcern
 
       # @note Override
@@ -34,8 +36,8 @@ module Petitest
             started_at: started_at.iso8601(6),
           },
         }
-        output = ::JSON.pretty_generate(data)
-        puts output
+        string = ::JSON.pretty_generate(data)
+        output.puts(string)
       end
     end
   end

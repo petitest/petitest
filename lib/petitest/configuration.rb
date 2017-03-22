@@ -8,23 +8,23 @@ module Petitest
       skip: :yellow,
     }
 
-    attr_writer :color_scheme
-    attr_writer :color
-    attr_writer :subscribers
-
     # @return [Hash{Symbol => Symbol}]
-    def color_scheme
-      @color_scheme ||= DEFAULT_COLOR_SCHEME.dup
-    end
+    attr_accessor :color_scheme
 
     # @return [Boolean]
-    def color
-      true
-    end
+    attr_accessor :color
+
+    # @return [IO]
+    attr_accessor :output
 
     # @return [Array<Petitest::Subscribers::BaseSubscriber>]
-    def subscribers
-      @subscribers ||= [::Petitest::Subscribers::ProgressReportSubscriber.new]
+    attr_accessor :subscribers
+
+    def initialize
+      @color_scheme = DEFAULT_COLOR_SCHEME.dup
+      @color = true
+      @output = ::STDOUT
+      @subscribers = [::Petitest::Subscribers::ProgressReportSubscriber.new]
     end
   end
 end
