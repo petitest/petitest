@@ -1,3 +1,8 @@
+## v0.1.2
+
+- Add Petitest.configuration.output
+- Improve configuration API
+
 ## v0.1.1
 
 - Support block on `#assert` method for Power Assert
