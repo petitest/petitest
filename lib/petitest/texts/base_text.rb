@@ -36,7 +36,7 @@ module Petitest
       # @param color_type [Symbol]
       # @return [String]
       def colorize(string, color_type)
-        if ::Petitest.configuration.colored
+        if ::Petitest.configuration.color
           "\e[#{ansi_color_code_for(color_type)}m#{string}\e[0m"
         else
           string

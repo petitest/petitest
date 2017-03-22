@@ -9,7 +9,7 @@ module Petitest
     }
 
     attr_writer :color_scheme
-    attr_writer :colored
+    attr_writer :color
     attr_writer :subscribers
 
     # @return [Hash{Symbol => Symbol}]
@@ -18,7 +18,7 @@ module Petitest
     end
 
     # @return [Boolean]
-    def colored
+    def color
       true
     end
 
