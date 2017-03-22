@@ -110,3 +110,4 @@ Times:
 ## Plug-ins
 
 - https://github.com/petitest/petitest-power_assert
+- https://github.com/petitest/petitest-tap
