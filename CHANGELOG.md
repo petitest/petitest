@@ -1,3 +1,7 @@
+## Unreleased
+
+- Remove utility assertions except for `#assert`
+
 ## v0.1.3
 
 - Fix OutputConcern bug
