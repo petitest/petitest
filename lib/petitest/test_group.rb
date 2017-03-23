@@ -51,10 +51,10 @@ module Petitest
     def assert(actual_or_message = nil, message = nil, &block)
       if block
         message = actual_or_message
-        check(message || "Given block returned falsy", &block)
+        check(message || "Expected given block to return truthy", &block)
       else
         actual = actual_or_message
-        check(message || "#{actual.inspect} is not truthy") do
+        check(message || "Expected #{actual.inspect} to be truthy") do
           actual
         end
       end

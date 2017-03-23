@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Improve error report format
+- Improve default `#assert` message
 
 ## v0.2.0
 
