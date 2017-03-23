@@ -14,7 +14,7 @@ module Petitest
         descendants << sub_class
       end
 
-      # @return [Array<Petit::TestCase]
+      # @return [Array<Petit::TestCase>]
       def test_cases
         descendants.flat_map do |test_group_class|
           test_group_class.test_methods.map do |test_method|
