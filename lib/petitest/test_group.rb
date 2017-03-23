@@ -50,6 +50,7 @@ module Petitest
     # @param message [String, nil]
     def assert(actual_or_message = nil, message = nil, &block)
       if block
+        message = actual_or_message
         check(message || "Given block returned falsy", &block)
       else
         actual = actual_or_message
