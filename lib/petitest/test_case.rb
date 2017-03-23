@@ -73,7 +73,7 @@ module Petitest
           if line.start_with?(path)
             break lines
           end
-          unless ::Petitest.configuration.backtrace_filters.any? { |prefix| line.start_with?(prefix) }
+          unless ::Petitest.configuration.backtrace_filters.any? { |filter| filter === line }
             lines << line
           end
         end.reverse

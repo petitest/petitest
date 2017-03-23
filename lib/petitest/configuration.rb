@@ -12,7 +12,10 @@ module Petitest
 
     # @return [Array<String>]
     def backtrace_filters
-      @backtrace_filters ||= [::File.expand_path("../..", __FILE__)]
+      @backtrace_filters ||= begin
+        path = ::File.expand_path("../..", __FILE__)
+        [-> (line) { line.start_with?(path) }]
+      end
     end
 
     # @return [Boolean]
