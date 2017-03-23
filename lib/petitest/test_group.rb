@@ -53,7 +53,7 @@ module Petitest
         check(message || "Given block returned falsy", &block)
       else
         actual = actual_or_message
-        check(message || "#{actual} is not truthy") do
+        check(message || "#{actual.inspect} is not truthy") do
           actual
         end
       end
