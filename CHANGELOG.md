@@ -1,3 +1,7 @@
+## Unreleased
+
+- Improve error report format
+
 ## v0.2.0
 
 - Merge errors into failures
