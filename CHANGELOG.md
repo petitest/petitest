@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Change test message interface
 - Remove utility assertions except for `#assert`
 
 ## v0.1.3

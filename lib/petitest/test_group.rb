@@ -50,20 +50,10 @@ module Petitest
     # @param message [String, nil]
     def assert(actual_or_message = nil, message = nil, &block)
       if block
-        check(
-          message: message,
-          template: "Given block returned falsy",
-          &block
-        )
+        check(message || "Given block returned falsy", &block)
       else
         actual = actual_or_message
-        check(
-          message: message,
-          template: "%{actual} is not truthy",
-          template_variables: {
-            actual: actual,
-          },
-        ) do
+        check(message || "#{actual} is not truthy") do
           actual
         end
       end
@@ -72,19 +62,9 @@ module Petitest
     private
 
     # @param message [String, nil]
-    # @param template [String]
-    # @param template_variables [Hash, nil]
-    def check(
-      message:,
-      template:,
-      template_variables: {}
-    )
-      unless yield
-        raise ::Petitest::AssertionFailureError.new(
-          additional_message: message,
-          template: template,
-          template_variables: template_variables,
-        )
+    def check(message, &block)
+      unless block.call
+        raise ::Petitest::AssertionFailureError.new(message)
       end
     end
   end

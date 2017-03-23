@@ -13,13 +13,7 @@ module Petitest
 
       # @note Override
       def to_s
-        colorize(
-          [
-            test_case.failure_assertion_type_message,
-            test_case.failure_additional_message,
-          ].compact.join("\n"),
-          :failure,
-        )
+        colorize(test_case.failure_message, :failure)
       end
     end
   end

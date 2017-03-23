@@ -61,16 +61,9 @@ module Petitest
     end
 
     # @return [String, nil]
-    def failure_additional_message
+    def failure_message
       if failed?
-        error.additional_message
-      end
-    end
-
-    # @return [String, nil]
-    def failure_assertion_type_message
-      if failed?
-        error.assertion_type_message
+        error.to_s
       end
     end
 
