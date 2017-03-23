@@ -32,7 +32,6 @@ gem install petitest
 Define a child class of `Petitest::TestGroup` with `#test_xxx` methods.
 
 ```ruby
-# test/some_test.rb
 require "petitest/autorun"
 
 class Sometest < Petitest::TestGroup
@@ -71,40 +70,38 @@ ruby test/sometest_test.rb
 ```
 
 ```
-.FFE..
+.FFF..
 
 Failures:
 
-  1) Sometest#test_false
+  1) PetitestTest#test_false
     assert(false)
-    false is not truthy
-    # test/sometest_test.rb:9:in `test_false'
+    Expected false to be truthy
+    # test/petitest_test.rb:9:in `test_false'
 
-  2) Sometest#test_nil
+  2) PetitestTest#test_nil
     assert(nil)
-    nil is not truthy
-    # test/sometest_test.rb:13:in `test_nil'
+    Expected nil to be truthy
+    # test/petitest_test.rb:13:in `test_nil'
 
-Errors:
-
-  1) Sometest#test_raise
+  3) PetitestTest#test_raise
     raise
-    RuntimeError:
-    # test/sometest_test.rb:17:in `test_raise'
+    RuntimeError
+
+    # test/petitest_test.rb:17:in `test_raise'
 
 Counts:
 
   6 tests
   3 passes
-  2 failures
-  1 errors
+  3 failures
   0 skips
 
 Times:
 
-  Started:  2017-03-22T05:40:32.846640+09:00
-  Finished: 2017-03-22T05:40:32.846784+09:00
-  Total:    0.000144s
+  Started:  2017-03-24T03:09:17.776418+09:00
+  Finished: 2017-03-24T03:09:17.776527+09:00
+  Total:    0.000109s
 ```
 
 ## Plug-ins
