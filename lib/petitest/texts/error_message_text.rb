@@ -14,7 +14,7 @@ module Petitest
       # @note Override
       def to_s
         elements = []
-        elements << test_case.error_class_name unless test_case.error_class_name.is_a?(::Petitest::AssertionFailureError)
+        elements << test_case.error_class_name unless test_case.error.is_a?(::Petitest::AssertionFailureError)
         elements << test_case.error_message
         string = elements.join("\n")
         colorize(string, :error)
