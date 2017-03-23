@@ -14,6 +14,9 @@ module Petitest
     # @return [Boolean]
     attr_accessor :color
 
+    # @return [Array<String>]
+    attr_accessor :prefixes_to_filter_backtrace
+
     # @return [IO]
     attr_accessor :output
 
@@ -23,6 +26,7 @@ module Petitest
     def initialize
       @color_scheme = DEFAULT_COLOR_SCHEME.dup
       @color = true
+      @prefixes_to_filter_backtrace = [::File.expand_path("../..", __FILE__)]
       @output = ::STDOUT
       @output.sync = true
       @subscribers = [::Petitest::Subscribers::ProgressReportSubscriber.new]

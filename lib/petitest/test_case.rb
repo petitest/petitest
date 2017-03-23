@@ -15,13 +15,6 @@ module Petitest
     # @return [Petitest::TestMethod]
     attr_reader :test_method
 
-    class << self
-      # @return [String]
-      def prefix_to_filter_backtrace
-        @prefix_to_filter_backtrace ||= ::File.expand_path("../..", __FILE__)
-      end
-    end
-
     # @param test_group_class [Class]
     # @param test_method [Petitest::TestMethod]
     def initialize(
@@ -75,11 +68,12 @@ module Petitest
     # @return [Array<String>, nil]
     def filtered_backtrace
       @filtered_backtrace ||= begin
+        path = ::File.expand_path("../test_group.rb", __FILE__)
         backtrace.reverse_each.each_with_object([]) do |line, lines|
-          if line.start_with?(::File.expand_path("../assertions.rb", __FILE__))
+          if line.start_with?(path)
             break lines
           end
-          unless line.start_with?(self.class.prefix_to_filter_backtrace)
+          unless ::Petitest.configuration.prefixes_to_filter_backtrace.any? { |prefix| line.start_with?(prefix) }
             lines << line
           end
         end.reverse
