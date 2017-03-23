@@ -1,7 +1,11 @@
-## Unreleased
+## v0.2.0
 
+- Merge errors into failures
 - Change test message interface
 - Remove utility assertions except for `#assert`
+- Add Petitest.configuration.backtrace_filter
+- Stop tests if any error occured before running tests
+- Improve report about empty errors/failures
 
 ## v0.1.3
 
