@@ -39,7 +39,6 @@ module Petitest
       def body
         texts = []
         texts << ::Petitest::Texts::FailuresText.new(test_cases: test_cases_failed) unless test_cases_failed.empty?
-        texts << ::Petitest::Texts::ErrorsText.new(test_cases: test_cases_aborted) unless test_cases_aborted.empty?
         texts << ::Petitest::Texts::TestCountsText.new(test_cases: test_cases)
         texts << ::Petitest::Texts::TimesText.new(
           finished_at: finished_at,
@@ -51,11 +50,6 @@ module Petitest
       # @return [String]
       def header
         ::Petitest::Texts::TestCasesResultMarginTopText.new(test_cases: test_cases).to_s
-      end
-
-      # @return [Array<Petitest::TestCase>]
-      def test_cases_aborted
-        @test_cases_aborted ||= test_cases.select(&:aborted?)
       end
 
       # @return [Array<Petitest::TestCase>]

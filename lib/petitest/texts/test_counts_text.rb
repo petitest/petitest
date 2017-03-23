@@ -27,14 +27,8 @@ module Petitest
           text_of_count_of_test_cases,
           text_of_count_of_passed_test_cases,
           text_of_count_of_failed_test_cases,
-          text_of_count_of_aborted_test_cases,
           text_of_count_of_skipped_test_cases,
         ].join("\n")
-      end
-
-      # @return [Integer]
-      def count_of_aborted_test_cases
-        test_cases.select(&:aborted?).length
       end
 
       # @return [Integer]
@@ -68,13 +62,8 @@ module Petitest
       end
 
       # @return [String]
-      def text_of_count_of_aborted_test_cases
-        colorize("%#{max_digits_length}d errors" % count_of_aborted_test_cases, :error)
-      end
-
-      # @return [String]
       def text_of_count_of_failed_test_cases
-        colorize("%#{max_digits_length}d failures" % count_of_failed_test_cases, :failure)
+        colorize("%#{max_digits_length}d failures" % count_of_failed_test_cases, :error)
       end
 
       # @return [String]

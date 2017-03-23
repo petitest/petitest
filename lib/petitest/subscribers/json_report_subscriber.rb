@@ -15,13 +15,11 @@ module Petitest
         data = {
           test_cases: test_cases.map do |test_case|
             {
-              aborted: test_case.aborted?,
               backtrace: test_case.backtrace,
               class_name: test_case.test_group_class.to_s,
               error_class_name: test_case.error_class_name,
               error_message: test_case.error_message,
               failed: test_case.failed?,
-              failure_message: test_case.failure_message,
               finished_at: test_case.finished_at.iso8601(6),
               method_line_number: test_case.test_method.line_number,
               method_name: test_case.test_method.method_name,

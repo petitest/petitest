@@ -30,7 +30,7 @@ module Petitest
       def body
         [
           ::Petitest::Texts::RaisedCodeText.new(test_case: test_case),
-          ::Petitest::Texts::FailureMessageText.new(test_case: test_case),
+          ::Petitest::Texts::ErrorMessageText.new(test_case: test_case),
           ::Petitest::Texts::FilteredBacktraceText.new(test_case: test_case),
         ].join("\n")
       end

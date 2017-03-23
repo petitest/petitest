@@ -14,10 +14,8 @@ module Petitest
       # @note Override
       def to_s
         case
-        when test_case.aborted?
-          colorize("E", :error)
         when test_case.failed?
-          colorize("F", :failure)
+          colorize("F", :error)
         when test_case.skipped?
           colorize("*", :skip)
         else

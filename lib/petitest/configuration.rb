@@ -28,7 +28,6 @@ module Petitest
       @color_scheme ||= {
         detail: :cyan,
         error: :red,
-        failure: :red,
         pass: :green,
         skip: :yellow,
       }

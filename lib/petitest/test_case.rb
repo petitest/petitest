@@ -27,42 +27,30 @@ module Petitest
       @test_method = test_method
     end
 
-    # @return [Boolean]
-    def aborted?
-      processed? && has_error? && !has_assertion_error?
-    end
-
     # @return [Array<String>, nil]
     def backtrace
-      if has_error?
+      if error
         error.backtrace
       end
     end
 
     # @return [String, nil]
     def error_class_name
-      if aborted?
+      if error
         error.class.to_s
       end
     end
 
     # @return [String, nil]
     def error_message
-      if aborted?
-        error.to_s
-      end
-    end
-
-    # @return [String, nil]
-    def failure_message
-      if failed?
+      if error
         error.to_s
       end
     end
 
     # @return [Boolean]
     def failed?
-      processed? && has_assertion_error?
+      processed? && !error.nil?
     end
 
     # @return [Array<String>, nil]
@@ -78,16 +66,6 @@ module Petitest
           end
         end.reverse
       end
-    end
-
-    # @return [Boolean]
-    def has_assertion_error?
-      error.is_a?(::Petitest::AssertionFailureError)
-    end
-
-    # @return [Boolean]
-    def has_error?
-      !error.nil?
     end
 
     # @return [Boolean]
