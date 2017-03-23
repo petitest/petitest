@@ -1,35 +1,46 @@
 module Petitest
   class Configuration
-    DEFAULT_COLOR_SCHEME = {
-      detail: :cyan,
-      error: :red,
-      failure: :red,
-      pass: :green,
-      skip: :yellow,
-    }
+    attr_writer :backtrace_filters
+
+    attr_writer :color
+
+    attr_writer :color_scheme
+
+    attr_writer :output
+
+    attr_writer :subscribers
 
     # @return [Array<String>]
-    attr_accessor :backtrace_filters
-
-    # @return [Hash{Symbol => Symbol}]
-    attr_accessor :color_scheme
+    def backtrace_filters
+      @backtrace_filters ||= [::File.expand_path("../..", __FILE__)]
+    end
 
     # @return [Boolean]
-    attr_accessor :color
+    def color
+      @color ||= true
+    end
+
+    # @return [Hash{Symbol => Symbol}]
+    def color_scheme
+      @color_scheme ||= {
+        detail: :cyan,
+        error: :red,
+        failure: :red,
+        pass: :green,
+        skip: :yellow,
+      }
+    end
 
     # @return [IO]
-    attr_accessor :output
+    def output
+      @output ||= ::STDOUT.tap do |io|
+        io.sync = true
+      end
+    end
 
     # @return [Array<Petitest::Subscribers::BaseSubscriber>]
-    attr_accessor :subscribers
-
-    def initialize
-      @backtrace_filters = [::File.expand_path("../..", __FILE__)]
-      @color_scheme = DEFAULT_COLOR_SCHEME.dup
-      @color = true
-      @output = ::STDOUT
-      @output.sync = true
-      @subscribers = [::Petitest::Subscribers::ProgressReportSubscriber.new]
+    def subscribers
+      @subscribers ||= [::Petitest::Subscribers::ProgressReportSubscriber.new]
     end
   end
 end
