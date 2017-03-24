@@ -58,7 +58,7 @@ module Petitest
 
       # @return [Array<Petit::TestCase>]
       def test_cases
-        test_methods.map do |test_method|
+        @test_cases ||= test_methods.map do |test_method|
           ::Petitest::TestCase.new(
             test_group_class: self,
             test_method: test_method,
