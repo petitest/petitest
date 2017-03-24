@@ -9,8 +9,13 @@ module Petitest
       attr_writer :metadata
 
       # @return [Array<Class>]
+      def children
+        @children ||= []
+      end
+
+      # @return [Array<Class>]
       def descendants
-        @@descendants ||= []
+        children.flat_map(&:children)
       end
 
       # @return [String, nil]
@@ -24,7 +29,7 @@ module Petitest
       # @note Override
       def inherited(child)
         super
-        descendants << child
+        children << child
       end
 
       # @return [Hash{Symbol => Object}]
@@ -45,14 +50,17 @@ module Petitest
 
       # @return [Array<Petit::TestCase>]
       def test_cases
-        descendants.flat_map do |test_group_class|
-          test_group_class.test_methods.map do |test_method|
-            ::Petitest::TestCase.new(
-              test_group_class: test_group_class,
-              test_method: test_method,
-            )
-          end
+        test_methods.map do |test_method|
+          ::Petitest::TestCase.new(
+            test_group_class: self,
+            test_method: test_method,
+          )
         end
+      end
+
+      # @return [Array<Petit::TestCase>]
+      def test_cases_and_children_test_cases
+        test_cases + children.flat_map(&:test_cases_and_children_test_cases)
       end
 
       # @return [Array<String>]
