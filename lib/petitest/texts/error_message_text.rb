@@ -15,7 +15,7 @@ module Petitest
       def to_s
         elements = []
         elements << test_case.error_class_name unless test_case.error.is_a?(::Petitest::AssertionFailureError)
-        elements << test_case.error_message
+        elements << test_case.error_message unless test_case.error_message.empty?
         string = elements.join("\n")
         colorize(string, :error)
       end
