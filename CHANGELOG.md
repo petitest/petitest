@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Add `after_running_test_group` and `before_running_test_group` events
+- Add `Petitest::TestGroup#nest_level`
 - Add `Petitest::TestGroup#sub_test_group`
 - Improve error report format
 - Improve default `#assert` message

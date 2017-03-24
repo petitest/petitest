@@ -8,6 +8,8 @@ module Petitest
 
       attr_writer :metadata
 
+      attr_writer :nest_level
+
       # @return [Array<Class>]
       def children
         @children ||= []
@@ -37,10 +39,16 @@ module Petitest
         @metadata ||= {}
       end
 
+      # @return [Integer]
+      def nest_level
+        @nest_level ||= 1
+      end
+
       # @param description [String]
       # @param metadata [Hash{Symbol => Object}]
       def sub_test_group(description, metadata = {}, &block)
         child = ::Class.new(self)
+        child.nest_level = nest_level + 1
         child.description = description
         child.metadata = self.metadata.merge(metadata)
         child.undefine_test_methods
