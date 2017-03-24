@@ -5,6 +5,8 @@
 
 A minimal solid testing framework for Ruby.
 
+![demo](/images/demo.png)
+
 ## Installation
 
 Add this line to your application's Gemfile:
