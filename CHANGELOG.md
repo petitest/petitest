@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Add `Petitest::TestGroup#sub_test_group`
 - Improve error report format
 - Improve default `#assert` message
 

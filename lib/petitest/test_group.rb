@@ -3,15 +3,44 @@ module Petitest
     TEST_METHOD_NAME_PREFIX = "test_"
 
     class << self
+      # @return [String, nil]
+      attr_accessor :description
+
+      attr_writer :metadata
+
       # @return [Array<Class>]
       def descendants
         @@descendants ||= []
       end
 
+      # @return [String, nil]
+      def full_description
+        descriptions = test_group_ancestors.reverse.map(&:description).compact
+        unless descriptions.empty?
+          descriptions.join(" ")
+        end
+      end
+
       # @note Override
-      def inherited(sub_class)
+      def inherited(child)
         super
-        descendants << sub_class
+        descendants << child
+      end
+
+      # @return [Hash{Symbol => Object}]
+      def metadata
+        @metadata ||= {}
+      end
+
+      # @param description [String]
+      # @param metadata [Hash{Symbol => Object}]
+      def sub_test_group(description, metadata = {}, &block)
+        child = ::Class.new(self)
+        child.description = description
+        child.metadata = self.metadata.merge(metadata)
+        child.undefine_test_methods
+        child.class_eval(&block)
+        child
       end
 
       # @return [Array<Petit::TestCase>]
@@ -42,6 +71,26 @@ module Petitest
             method_name: method_name.to_s,
             path: unbound_method.source_location[0],
           )
+        end
+      end
+
+      def undefine_test_methods
+        test_method_names.each do |method_name|
+          undef_method(method_name)
+        end
+      end
+
+      private
+
+      # @return [Array<Class>]
+      def test_group_ancestors
+        ancestors.each_with_object([]) do |klass, classes|
+          if klass == ::Petitest::TestGroup
+            break classes
+          end
+          if klass.is_a?(::Class)
+            classes << klass
+          end
         end
       end
     end
