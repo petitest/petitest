@@ -41,7 +41,7 @@ module Petitest
 
       # @return [Integer]
       def nest_level
-        @nest_level ||= 1
+        @nest_level ||= 0
       end
 
       # @param description [String]
