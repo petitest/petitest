@@ -34,6 +34,19 @@ module Petitest
       end
     end
 
+    # @return [String]
+    def description
+      @description ||= "##{method_name}"
+    end
+
+    # @return [String]
+    def full_description
+      [
+        test_group_class.full_description,
+        description,
+      ].join(" ")
+    end
+
     # @return [String, nil]
     def error_class_name
       if error

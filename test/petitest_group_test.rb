@@ -1,7 +1,7 @@
 require "petitest/autorun"
 require "petitest/power_assert"
 
-class PetitestTest < Petitest::TestGroup
+class PetitestGroupTest < Petitest::TestGroup
   prepend ::Petitest::PowerAssert
 
   def test_assertion_with_truthy_block_to_pass
@@ -14,15 +14,15 @@ class PetitestTest < Petitest::TestGroup
     assert(true)
   end
 
-  def test_description_to_be_nil
+  def test_description_to_be_set
     assert do
-      self.class.description.nil?
+      self.class.description == "PetitestGroupTest"
     end
   end
 
-  def test_full_description_to_be_nil
+  def test_full_description_to_be_set
     assert do
-      self.class.full_description.nil?
+      self.class.full_description == "PetitestGroupTest"
     end
   end
 
@@ -35,7 +35,7 @@ class PetitestTest < Petitest::TestGroup
 
     def test_full_description_to_be_equal_to_description
       assert do
-        self.class.full_description == "sub test group level 1"
+        self.class.full_description == "PetitestGroupTest sub test group level 1"
       end
     end
 
@@ -54,7 +54,7 @@ class PetitestTest < Petitest::TestGroup
 
       def test_full_description_to_be_set
         assert do
-          self.class.full_description == "sub test group level 1 sub test group level 2"
+          self.class.full_description == "PetitestGroupTest sub test group level 1 sub test group level 2"
         end
       end
 

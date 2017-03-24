@@ -3,8 +3,7 @@ module Petitest
     TEST_METHOD_NAME_PREFIX = "test_"
 
     class << self
-      # @return [String, nil]
-      attr_accessor :description
+      attr_writer :description
 
       attr_writer :metadata
 
@@ -20,9 +19,14 @@ module Petitest
         children.flat_map(&:children)
       end
 
+      # @return [String]
+      def description
+        @description ||= name
+      end
+
       # @return [String, nil]
       def full_description
-        descriptions = test_group_ancestors.reverse.map(&:description).compact
+        descriptions = concrete_test_group_ancestors.reverse.map(&:description)
         unless descriptions.empty?
           descriptions.join(" ")
         end
@@ -99,7 +103,7 @@ module Petitest
       private
 
       # @return [Array<Class>]
-      def test_group_ancestors
+      def concrete_test_group_ancestors
         ancestors.each_with_object([]) do |klass, classes|
           if klass == ::Petitest::TestGroup
             break classes
