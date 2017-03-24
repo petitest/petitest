@@ -1,4 +1,4 @@
-## Unreleased
+## v0.2.1
 
 - Add `after_running_test_group` and `before_running_test_group` events
 - Add `Petitest::TestGroup#nest_level`
