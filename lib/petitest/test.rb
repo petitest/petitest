@@ -7,8 +7,6 @@ module Petitest
 
       attr_writer :metadata
 
-      attr_writer :nest_level
-
       # @return [Array<Class>]
       def children
         @children ||= []
@@ -26,10 +24,7 @@ module Petitest
 
       # @return [String, nil]
       def full_description
-        descriptions = concrete_test_ancestors.reverse.map(&:description)
-        unless descriptions.empty?
-          descriptions.join(" ")
-        end
+        test_ancestors.reverse.map(&:description).join(" ")
       end
 
       # @note Override
@@ -43,21 +38,16 @@ module Petitest
         @metadata ||= {}
       end
 
-      # @return [Integer]
-      def nest_level
-        @nest_level ||= 0
-      end
-
-      # @param description [String]
-      # @param metadata [Hash{Symbol => Object}]
-      def sub_test(description, metadata = {}, &block)
-        child = ::Class.new(self)
-        child.nest_level = nest_level + 1
-        child.description = description
-        child.metadata = self.metadata.merge(metadata)
-        child.undefine_test_methods
-        child.class_eval(&block)
-        child
+      # @return [Array<Class>]
+      def test_ancestors
+        @test_ancestors ||= ancestors.each_with_object([]) do |klass, classes|
+          if klass == ::Petitest::Test
+            break classes
+          end
+          if klass.is_a?(::Class)
+            classes << klass
+          end
+        end
       end
 
       # @return [Array<String>]
@@ -70,20 +60,6 @@ module Petitest
       def undefine_test_methods
         test_method_names.each do |method_name|
           undef_method(method_name)
-        end
-      end
-
-      private
-
-      # @return [Array<Class>]
-      def concrete_test_ancestors
-        ancestors.each_with_object([]) do |klass, classes|
-          if klass == ::Petitest::Test
-            break classes
-          end
-          if klass.is_a?(::Class)
-            classes << klass
-          end
         end
       end
     end

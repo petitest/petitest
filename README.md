@@ -80,9 +80,7 @@ echo $?
 0
 ```
 
-## Helpers
-
-### Assertion
+## Assertions
 
 For simplicity, only `#assert` is provided from this core library.
 
@@ -90,19 +88,29 @@ For simplicity, only `#assert` is provided from this core library.
 assert { foo }
 ```
 
-### Nesting
+If you need more assertions, use plugins like [patitest-assertions](https://github.com/petitest/petitest-assertions).
 
-Use `#sub_test` for nesting, in a thoughtful manner.
+## DSL
+
+If you want to use `#test` and `#sub_test` DSL, extend `Petitest::DSL` into your test class.
 
 ```ruby
-sub_test "foo" do
-  def test_foo
+class ExampleTest < Petitest::Test
+  extend ::Petitest::DSL
+
+  test "foo" do
     assert { foo }
   end
 
   sub_test "bar" do
-    def test_bar
-      assert { bar }
+    test "baz" do
+      assert { baz }
+    end
+
+    sub_test "boo" do
+      test "boz" do
+        assert { boz }
+      end
     end
   end
 end

@@ -1,6 +1,9 @@
 ## Unreleased
 
+- Add `Petitest::DSL`
 - Add `Petitest::TestRunner`
+- Remove `Petitest::Test.nest_level`
+- Change `Petitest::Test.sub_test` to `Petitest::DSL#sub_test`
 - Change `Petitest::TestGroup` to `Petitest::Test`
 - Change `#after_running_test_case` to `#after_running_test`
 - Change `#after_running_tests` to `#after_running_test_plan`

@@ -20,7 +20,7 @@ module Petitest
 
     # @return [Integer]
     def nest_level
-      test_class.nest_level
+      test_class.test_ancestors.length - 1
     end
 
     # @return [Array<Petitest::Test>]
