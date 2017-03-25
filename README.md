@@ -168,6 +168,7 @@ Here are some official plugins for Petitest:
 - https://github.com/petitest/petitest-assertions
 - https://github.com/petitest/petitest-dsl
 - https://github.com/petitest/petitest-power_assert
+- https://github.com/petitest/petitest-spec
 - https://github.com/petitest/petitest-tap
 
 ## For developers
