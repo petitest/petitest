@@ -80,9 +80,9 @@ echo $?
 0
 ```
 
-### Assertions
+### Assertion
 
-Only `#assert` is provided for simplicity.
+Only `#assert` is provided on this core library for simplicity.
 
 ```ruby
 assert { foo }
