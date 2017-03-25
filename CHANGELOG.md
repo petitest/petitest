@@ -1,5 +1,6 @@
 ## Unreleased
 
+- Remove `Petitest::DSL`
 - Remove `Petitest::Test.full_description`
 
 ## v0.3.0

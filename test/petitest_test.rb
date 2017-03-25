@@ -2,7 +2,6 @@ require "petitest/autorun"
 require "petitest/power_assert"
 
 class PetitestTest < Petitest::Test
-  extend ::Petitest::DSL
   prepend ::Petitest::PowerAssert
 
   def test_assertion_with_truthy_block_to_pass
