@@ -43,7 +43,7 @@ class ExampleTest < Petitest::Test
 end
 ```
 
-### Run it
+### Run it as a Ruby script
 
 Run your test file as a Ruby script:
 
@@ -78,6 +78,23 @@ echo $?
 
 ```
 0
+```
+
+### Run all tests
+
+Require `"rake/testtask"` and initialize `Rake::TestTask` on your Rakefile like:
+
+```ruby
+require "rake/testtask"
+Rake::TestTask.new do |task|
+  task.pattern = "test/**/*_test.rb"
+end
+```
+
+Run `test` rake task that you defined in the above code to run all tests:
+
+```bash
+rake test
 ```
 
 ## Assertions
