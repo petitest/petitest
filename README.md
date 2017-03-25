@@ -7,9 +7,7 @@ A minimal solid testing framework for Ruby.
 
 ![demo](/images/demo.png)
 
-## Usage
-
-### Installation
+## Installation
 
 Add this line to your application's Gemfile:
 
@@ -28,6 +26,8 @@ Or install it yourself as:
 ```bash
 gem install petitest
 ```
+
+## Usage
 
 ### Create your test file
 
@@ -80,41 +80,56 @@ echo $?
 0
 ```
 
+## Helpers
+
 ### Assertion
 
-Only `#assert` is provided on this core library for simplicity.
+For simplicity, only `#assert` is provided from this core library.
 
 ```ruby
 assert { foo }
 ```
 
-### Configuration
+### Nesting
 
-Default configuration example:
+Use `#sub_test` for nesting, in a thoughtful manner.
+
+```ruby
+sub_test "foo" do
+  def test_foo
+    assert { foo }
+  end
+
+  sub_test "bar" do
+    def test_bar
+      assert { bar }
+    end
+  end
+end
+```
+
+## Configuration
+
+### color
+
+Enable colored output.
 
 ```ruby
 Petitest.configuration.color = true
+```
 
-Petitest.configuration.backtrace_filters = [
-  -> (line) { line.start_with?("/path/to/petitest/lib") },
-]
+### color_scheme
 
+Color scheme for colored output.
+
+```ruby
 Petitest.configuration.color_scheme = {
   detail: :cyan,
   error: :red,
   pass: :green,
   skip: :yellow,
 }
-
-Petitest.configuration.output = ::STDOUT
-Petitest.configuration.output.sync = true
-
-Petitest.configuration.subscribers = [
-  ::Petitest::Subscribers::JsonReportSubscriber.new,
-]
 ```
-
-### Color types
 
 These color types are available on color scheme configuration:
 
@@ -128,7 +143,34 @@ These color types are available on color scheme configuration:
 - `:white`
 - `:yellow`
 
-### Subscribers
+### backtrace_filters
+
+Mechanism for filter out unnecessary lines from error backtrace.
+
+```ruby
+Petitest.configuration.backtrace_filters = [
+  -> (line) { line.start_with?("/path/to/petitest/lib") },
+]
+```
+
+### output
+
+Output path for some subscribers.
+
+```ruby
+Petitest.configuration.output = ::STDOUT
+Petitest.configuration.output.sync = true
+```
+
+### subscribers
+
+Test event subscribers (test reporters are kind of subscribers).
+
+```ruby
+Petitest.configuration.subscribers = [
+  ::Petitest::Subscribers::DocomentReportSubscriber.new,
+]
+```
 
 These subscribers are provided by default:
 
@@ -136,7 +178,7 @@ These subscribers are provided by default:
 - `Petitest::Subscribers::JsonReportSubscriber`
 - `Petitest::Subscribers::ProgressReportSubscriber`
 
-### Official Plugins
+## Official Plugins
 
 Here are some official plugins for Petitest:
 
