@@ -7,7 +7,9 @@ A minimal solid testing framework for Ruby.
 
 ![demo](/images/demo.png)
 
-## Installation
+## Usage
+
+### Installation
 
 Add this line to your application's Gemfile:
 
@@ -27,9 +29,7 @@ Or install it yourself as:
 gem install petitest
 ```
 
-## Usage
-
-### 1. Write tests
+### Create your test file
 
 Define a child class of `Petitest::Test` with `#test_xxx` methods.
 
@@ -43,7 +43,7 @@ class ExampleTest < Petitest::Test
 end
 ```
 
-### 2. Run tests
+### Run it
 
 Run your test file as a Ruby script:
 
@@ -70,7 +70,81 @@ Times:
   Total:    0.000231s
 ```
 
-## Subscriber events
+### Assertions
+
+Petitest provides only `#assert` for simplicity.
+
+### Configuration
+
+Default configuration example:
+
+```ruby
+Petitest.configuration.color = true
+
+Petitest.configuration.backtrace_filters = [
+  -> (line) { line.start_with?("/path/to/petitest/lib") },
+]
+
+Petitest.configuration.color_scheme = {
+  detail: :cyan,
+  error: :red,
+  pass: :green,
+  skip: :yellow,
+}
+
+Petitest.configuration.output = ::STDOUT
+Petitest.configuration.output.sync = true
+
+Petitest.configuration.subscribers = [
+  ::Petitest::Subscribers::JsonReportSubscriber.new,
+]
+```
+
+### Color types
+
+- `:black`
+- `:blue`
+- `:bold`
+- `:cyan`
+- `:green`
+- `:magenta`
+- `:red`
+- `:white`
+- `:yellow`
+
+### Subscribers
+
+- `Petitest::Subscribers::DocumentReportSubscriber` (default)
+- `Petitest::Subscribers::JsonReportSubscriber`
+- `Petitest::Subscribers::ProgressReportSubscriber`
+
+### Official Plugins
+
+- https://github.com/petitest/petitest-assertions
+- https://github.com/petitest/petitest-power_assert
+- https://github.com/petitest/petitest-tap
+
+## For developers
+
+### Tree
+
+```
+TestPlan
+|---TestGroup 1
+|   |---Test 1-1
+|   |---Test 1-2
+|   `---Test 1-3
+|---TestGroup2
+|   |---Test 2-1
+|   |---Test 2-2
+|   `---Test 2-3
+`---TestGroup3
+    |---Test 3-1
+    |---Test 3-2
+    `---Test 3-3
+```
+
+### Events
 
 - `#before_running_test_plan(test_plan)`
 - `#before_running_test_group(test_group)`
@@ -78,9 +152,3 @@ Times:
 - `#after_running_test(test)`
 - `#after_running_test_group(test_group)`
 - `#after_running_test_plan(test_plan)`
-
-## Official plugins
-
-- https://github.com/petitest/petitest-assertions
-- https://github.com/petitest/petitest-power_assert
-- https://github.com/petitest/petitest-tap
