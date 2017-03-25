@@ -37,7 +37,7 @@ module Petitest
 
       # @return [String]
       def heading
-        "#{ordinal_number}) #{test.class}##{test.runner.test_method_name}"
+        "#{ordinal_number}) #{test.runner.full_description}"
       end
 
       # @return [Integer]

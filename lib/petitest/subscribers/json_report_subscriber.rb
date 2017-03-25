@@ -21,6 +21,7 @@ module Petitest
               error_message: test.runner.error_message,
               failed: test.runner.failed?,
               finished_at: test.runner.finished_at.iso8601(6),
+              full_description: test.runner.full_description,
               method_line_number: test.runner.test_method.line_number,
               method_name: test.runner.test_method.method_name,
               path: test.runner.test_method.path,

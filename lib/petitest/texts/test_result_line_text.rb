@@ -14,8 +14,8 @@ module Petitest
       # @note Override
       def to_s
         indent(
-          colorize("##{test.runner.test_method_name}", color_type),
-          2 * (test.runner.test_group.nest_level + 1),
+          colorize(test.runner.description, color_type),
+          indent_level,
         )
       end
 
@@ -31,6 +31,11 @@ module Petitest
         else
           :pass
         end
+      end
+
+      # @return [Integer]
+      def indent_level
+        2 * (test.runner.test_group.nest_level + 1)
       end
     end
   end

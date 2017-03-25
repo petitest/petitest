@@ -1,3 +1,7 @@
+## Unreleased
+
+- Use `Peitest::TestRunner#description` on test report
+
 ## v0.3.1
 
 - Remove `Petitest::DSL`
