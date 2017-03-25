@@ -110,6 +110,17 @@ end
 
 ## Configuration
 
+### backtrace_filters
+
+Mechanism for filter out unnecessary lines from error backtrace.
+Each element must be able to respond to `#===` method.
+
+```ruby
+Petitest.configuration.backtrace_filters = [
+  -> (line) { line.start_with?("/path/to/petitest/lib") },
+]
+```
+
 ### color
 
 Enable colored output.
@@ -142,16 +153,6 @@ These color types are available on color scheme configuration:
 - `:red`
 - `:white`
 - `:yellow`
-
-### backtrace_filters
-
-Mechanism for filter out unnecessary lines from error backtrace.
-
-```ruby
-Petitest.configuration.backtrace_filters = [
-  -> (line) { line.start_with?("/path/to/petitest/lib") },
-]
-```
 
 ### output
 
