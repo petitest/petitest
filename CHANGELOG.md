@@ -1,3 +1,7 @@
+## Unreleased
+
+- Remove `Petitest::Test.full_description`
+
 ## v0.3.0
 
 - Add `Petitest::DSL`

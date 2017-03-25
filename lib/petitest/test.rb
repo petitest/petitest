@@ -29,11 +29,6 @@ module Petitest
         ::Petitest::TestGroup.new(test_class: self)
       end
 
-      # @return [String, nil]
-      def full_description
-        test_ancestors.reverse.map(&:description).join(" ")
-      end
-
       # @note Override
       def inherited(child)
         super

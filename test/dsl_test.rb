@@ -1,7 +1,7 @@
 require "petitest/autorun"
 require "petitest/power_assert"
 
-class PetitestTest < Petitest::Test
+class DSLTest < Petitest::Test
   extend ::Petitest::DSL
   prepend ::Petitest::PowerAssert
 
@@ -23,7 +23,7 @@ class PetitestTest < Petitest::Test
 
     test "test group full description" do
       assert do
-        runner.test_group.full_description == "PetitestTest sub test group level 1"
+        runner.test_group.full_description == "DSLTest sub test group level 1"
       end
     end
 
@@ -41,7 +41,7 @@ class PetitestTest < Petitest::Test
 
     test "test full description" do
       assert do
-        runner.full_description == "PetitestTest sub test group level 1 test full description"
+        runner.full_description == "DSLTest sub test group level 1 test full description"
       end
     end
 
