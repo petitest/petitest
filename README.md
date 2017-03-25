@@ -177,9 +177,6 @@ Here are some official plugins for Petitest:
 
 ```
 TestPlan
-|---Test 1
-|---Test 2
-|---Test 3
 |---TestGroup 1
 |   |---Test 1-1
 |   |---Test 1-2
