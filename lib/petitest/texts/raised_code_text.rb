@@ -3,12 +3,12 @@ require "petitest/texts/base_text"
 module Petitest
   module Texts
     class RaisedCodeText < ::Petitest::Texts::BaseText
-      # @return [Petitest::TestCase]
-      attr_reader :test_case
+      # @return [Petitest::Test]
+      attr_reader :test
 
-      # @param test_case [Petitest::TestCase]
-      def initialize(test_case:)
-        @test_case = test_case
+      # @param test [Petitest::Test]
+      def initialize(test:)
+        @test = test
       end
 
       # @note Override
@@ -44,8 +44,8 @@ module Petitest
       # @return [Array<String>]
       def caller_segments
         @caller_segments ||= begin
-          if test_case.filtered_backtrace[0]
-            test_case.filtered_backtrace[0].split(":", 3)
+          if test.runner.filtered_backtrace[0]
+            test.runner.filtered_backtrace[0].split(":", 3)
           else
             []
           end

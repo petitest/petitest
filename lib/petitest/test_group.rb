@@ -1,140 +1,45 @@
 module Petitest
   class TestGroup
-    TEST_METHOD_NAME_PREFIX = "test_"
+    # @return [Class]
+    attr_reader :test_class
 
-    class << self
-      attr_writer :description
-
-      attr_writer :metadata
-
-      attr_writer :nest_level
-
-      # @return [Array<Class>]
-      def children
-        @children ||= []
-      end
-
-      # @return [Array<Class>]
-      def descendants
-        children.flat_map(&:children)
-      end
-
-      # @return [String]
-      def description
-        @description ||= name
-      end
-
-      # @return [String, nil]
-      def full_description
-        descriptions = concrete_test_group_ancestors.reverse.map(&:description)
-        unless descriptions.empty?
-          descriptions.join(" ")
-        end
-      end
-
-      # @note Override
-      def inherited(child)
-        super
-        children << child
-      end
-
-      # @return [Hash{Symbol => Object}]
-      def metadata
-        @metadata ||= {}
-      end
-
-      # @return [Integer]
-      def nest_level
-        @nest_level ||= 0
-      end
-
-      # @param description [String]
-      # @param metadata [Hash{Symbol => Object}]
-      def sub_test_group(description, metadata = {}, &block)
-        child = ::Class.new(self)
-        child.nest_level = nest_level + 1
-        child.description = description
-        child.metadata = self.metadata.merge(metadata)
-        child.undefine_test_methods
-        child.class_eval(&block)
-        child
-      end
-
-      # @return [Array<Petit::TestCase>]
-      def test_cases
-        @test_cases ||= test_methods.map do |test_method|
-          ::Petitest::TestCase.new(
-            test_group_class: self,
-            test_method: test_method,
-          )
-        end
-      end
-
-      # @return [Array<Petit::TestCase>]
-      def test_cases_and_children_test_cases
-        test_cases + children.flat_map(&:test_cases_and_children_test_cases)
-      end
-
-      # @return [Array<String>]
-      def test_method_names
-        public_instance_methods.map(&:to_s).select do |method_name|
-          method_name.start_with?(TEST_METHOD_NAME_PREFIX)
-        end
-      end
-
-      # @return [Array<Petitest::TestMethod>]
-      def test_methods
-        test_method_names.map do |method_name|
-          unbound_method = public_instance_method(method_name)
-          ::Petitest::TestMethod.new(
-            line_number: unbound_method.source_location[1],
-            method_name: method_name.to_s,
-            path: unbound_method.source_location[0],
-          )
-        end
-      end
-
-      def undefine_test_methods
-        test_method_names.each do |method_name|
-          undef_method(method_name)
-        end
-      end
-
-      private
-
-      # @return [Array<Class>]
-      def concrete_test_group_ancestors
-        ancestors.each_with_object([]) do |klass, classes|
-          if klass == ::Petitest::TestGroup
-            break classes
-          end
-          if klass.is_a?(::Class)
-            classes << klass
-          end
-        end
-      end
+    # @param test_class [Class]
+    def initialize(test_class:)
+      @test_class ||= test_class
     end
 
-    # @param actual_or_message [Object]
-    # @param message [String, nil]
-    def assert(actual_or_message = nil, message = nil, &block)
-      if block
-        message = actual_or_message
-        check(message || "Expected given block to return truthy", &block)
-      else
-        actual = actual_or_message
-        check(message || "Expected #{actual.inspect} to be truthy") do
-          actual
-        end
-      end
+    # @return [String]
+    def description
+      test_class.description
     end
 
-    private
+    # @return [Hash{Symbol => Object}]
+    def metadata
+      test_class.metadata
+    end
 
-    # @param message [String, nil]
-    def check(message, &block)
-      unless block.call
-        raise ::Petitest::AssertionFailureError.new(message)
+    # @return [Integer]
+    def nest_level
+      test_class.nest_level
+    end
+
+    # @return [Array<Petitest::Test>]
+    def self_and_descendant_tests
+      tests + sub_test_groups.flat_map(&:self_and_descendant_tests)
+    end
+
+    # @return [Array<Petitest::TestGroup>]
+    def sub_test_groups
+      @sub_test_groups ||= test_class.children.map(&:generate_test_group)
+    end
+
+    # @return [Array<Petitest::Test>]
+    def tests
+      @tests ||= test_class.test_method_names.map do |test_method_name|
+        test_class.new(
+          test_group: self,
+          test_method_name: test_method_name,
+        )
       end
     end
   end

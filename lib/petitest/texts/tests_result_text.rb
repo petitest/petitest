@@ -2,27 +2,27 @@ require "petitest/texts/base_text"
 
 module Petitest
   module Texts
-    class TestCasesResultText < ::Petitest::Texts::BaseText
+    class TestsResultText < ::Petitest::Texts::BaseText
       # @return [Time]
       attr_reader :finished_at
 
       # @return [Time]
       attr_reader :started_at
 
-      # @return [Array<Petitest::TestCase>]
-      attr_reader :test_cases
+      # @return [Array<Petitest::Test>]
+      attr_reader :tests
 
       # @param finished_at [Time]
       # @param started_at [Time]
-      # @param test_cases [Array<Petitest::TestCase>]
+      # @param tests [Array<Petitest::Test>]
       def initialize(
         finished_at:,
         started_at:,
-        test_cases:
+        tests:
       )
         @finished_at = finished_at
         @started_at = started_at
-        @test_cases = test_cases
+        @tests = tests
       end
 
       # @note Override
@@ -38,8 +38,8 @@ module Petitest
       # @return [String]
       def body
         texts = []
-        texts << ::Petitest::Texts::FailuresText.new(test_cases: test_cases_failed) unless test_cases_failed.empty?
-        texts << ::Petitest::Texts::TestCountsText.new(test_cases: test_cases)
+        texts << ::Petitest::Texts::FailuresText.new(tests: tests_failed) unless tests_failed.empty?
+        texts << ::Petitest::Texts::TestCountsText.new(tests: tests)
         texts << ::Petitest::Texts::TimesText.new(
           finished_at: finished_at,
           started_at: started_at,
@@ -49,12 +49,14 @@ module Petitest
 
       # @return [String]
       def header
-        ::Petitest::Texts::TestCasesResultMarginTopText.new(test_cases: test_cases).to_s
+        ::Petitest::Texts::TestsResultMarginTopText.new(tests: tests).to_s
       end
 
-      # @return [Array<Petitest::TestCase>]
-      def test_cases_failed
-        @test_cases_failed ||= test_cases.select(&:failed?)
+      # @return [Array<Petitest::Test>]
+      def tests_failed
+        @tests_failed ||= tests.select do |test|
+          test.runner.failed?
+        end
       end
     end
   end

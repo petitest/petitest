@@ -3,12 +3,12 @@ require "petitest/texts/base_text"
 module Petitest
   module Texts
     class FailuresText < ::Petitest::Texts::BaseText
-      # @return [Array<Petitest::TestCase>]
-      attr_reader :test_cases
+      # @return [Array<Petitest::Test>]
+      attr_reader :tests
 
-      # @param test_cases [Array<Petitest::TestCase>]
-      def initialize(test_cases:)
-        @test_cases = test_cases
+      # @param tests [Array<Petitest::Test>]
+      def initialize(tests:)
+        @tests = tests
       end
 
       # @note Override
@@ -28,10 +28,10 @@ module Petitest
 
       # @return [Array<Petitest::Textx::FailuresElementText>]
       def failures_element_texts
-        test_cases.map.with_index do |test_case, index|
+        tests.map.with_index do |test, index|
           ::Petitest::Texts::FailuresElementText.new(
             index: index,
-            test_case: test_case,
+            test: test,
           )
         end
       end

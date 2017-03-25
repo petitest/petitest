@@ -3,19 +3,19 @@ require "petitest/texts/base_text"
 module Petitest
   module Texts
     class ErrorMessageText < ::Petitest::Texts::BaseText
-      # @return [Petitest::TestCase]
-      attr_reader :test_case
+      # @return [Petitest::Test]
+      attr_reader :test
 
-      # @param test_case [Petitest::TestCase]
-      def initialize(test_case:)
-        @test_case = test_case
+      # @param test [Petitest::Test]
+      def initialize(test:)
+        @test = test
       end
 
       # @note Override
       def to_s
         elements = []
-        elements << test_case.error_class_name unless test_case.error.is_a?(::Petitest::AssertionFailureError)
-        elements << test_case.error_message unless test_case.error_message.empty?
+        elements << test.runner.error_class_name unless test.runner.error.is_a?(::Petitest::AssertionFailureError)
+        elements << test.runner.error_message unless test.runner.error_message.empty?
         string = elements.join("\n")
         colorize(string, :error)
       end

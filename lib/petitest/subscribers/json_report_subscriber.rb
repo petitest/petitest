@@ -10,22 +10,22 @@ module Petitest
       include ::Petitest::SubscriberConcerns::TimeConcern
 
       # @note Override
-      def after_running_test_cases(test_cases)
+      def after_running_test_plan(test_plan)
         super
         data = {
-          test_cases: test_cases.map do |test_case|
+          tests: test_plan.tests.map do |test|
             {
-              backtrace: test_case.backtrace,
-              class_name: test_case.test_group_class.to_s,
-              error_class_name: test_case.error_class_name,
-              error_message: test_case.error_message,
-              failed: test_case.failed?,
-              finished_at: test_case.finished_at.iso8601(6),
-              method_line_number: test_case.test_method.line_number,
-              method_name: test_case.test_method.method_name,
-              path: test_case.test_method.path,
-              skipped: test_case.skipped?,
-              started_at: test_case.started_at.iso8601(6),
+              backtrace: test.runner.backtrace,
+              class_name: test.class.to_s,
+              error_class_name: test.runner.error_class_name,
+              error_message: test.runner.error_message,
+              failed: test.runner.failed?,
+              finished_at: test.runner.finished_at.iso8601(6),
+              method_line_number: test.runner.test_method.line_number,
+              method_name: test.runner.test_method.method_name,
+              path: test.runner.test_method.path,
+              skipped: test.runner.skipped?,
+              started_at: test.runner.started_at.iso8601(6),
             }
           end,
           times: {

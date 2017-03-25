@@ -1,8 +1,17 @@
+## Unreleased
+
+- Add `Petitest::TestRunner`
+- Change `Petitest::TestGroup` to `Petitest::Test`
+- Change `#after_running_test_case` to `#after_running_test`
+- Change `#after_running_tests` to `#after_running_test_plan`
+- Change `#before_running_test_case` to `#before_running_test`
+- Change `#before_running_tests` to `#before_running_test_plan`
+
 ## v0.2.1
 
 - Add `after_running_test_group` and `before_running_test_group` events
 - Add `Petitest::TestGroup#nest_level`
-- Add `Petitest::TestGroup#sub_test_group`
+- Add `Petitest::TestGroup#sub_test`
 - Add document style report
 - Improve error report format
 - Improve default `#assert` message

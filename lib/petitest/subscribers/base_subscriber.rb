@@ -1,28 +1,28 @@
 module Petitest
   module Subscribers
     class BaseSubscriber
-      # @param test_case [Petit::TestCase]
-      def after_running_test_case(test_case)
+      # @param test [Petitest::Test]
+      def after_running_test(test)
       end
 
-      # @param test_cases [Array<Petit::TestCase>]
-      def after_running_test_cases(test_cases)
-      end
-
-      # @param test_group [Class]
+      # @param test_group [Petitest::TestGroup]
       def after_running_test_group(test_group)
       end
 
-      # @param test_case [Petit::TestCase]
-      def before_running_test_case(test_case)
+      # @param test_plan [Petitest::TestPlan]
+      def after_running_test_plan(test_plan)
       end
 
-      # @param test_cases [Array<Petit::TestCase>]
-      def before_running_test_cases(test_cases)
+      # @param test [Petitest::Test]
+      def before_running_test(test)
       end
 
-      # @param test_group [Class]
+      # @param test_group [Petitest::TestGroup]
       def before_running_test_group(test_group)
+      end
+
+      # @param test_plan [Petitest::TestPlan]
+      def before_running_test_plan(test_plan)
       end
     end
   end

@@ -2,7 +2,7 @@ require "petitest/texts/base_text"
 
 module Petitest
   module Texts
-    class FilteredBacktraceText < ::Petitest::Texts::BaseText
+    class TestResultCharacterText < ::Petitest::Texts::BaseText
       # @return [Petitest::Test]
       attr_reader :test
 
@@ -13,7 +13,14 @@ module Petitest
 
       # @note Override
       def to_s
-        colorize(test.runner.filtered_backtrace.join("\n").gsub(/^/, "# "), :detail)
+        case
+        when test.runner.failed?
+          colorize("F", :error)
+        when test.runner.skipped?
+          colorize("*", :skip)
+        else
+          "."
+        end
       end
     end
   end

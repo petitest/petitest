@@ -6,14 +6,14 @@ module Petitest
       # @return [Integer]
       attr_reader :index
 
-      # @return [Petitest::TestCase]
-      attr_reader :test_case
+      # @return [Petitest::Test]
+      attr_reader :test
 
       # @param index [Integer]
-      # @param test_case [Petitest::TestCase]
-      def initialize(index:, test_case:)
+      # @param test [Petitest::Test]
+      def initialize(index:, test:)
         @index = index
-        @test_case = test_case
+        @test = test
       end
 
       # @note Override
@@ -29,25 +29,20 @@ module Petitest
       # @return [String]
       def body
         [
-          ::Petitest::Texts::RaisedCodeText.new(test_case: test_case),
-          ::Petitest::Texts::ErrorMessageText.new(test_case: test_case),
-          ::Petitest::Texts::FilteredBacktraceText.new(test_case: test_case),
+          ::Petitest::Texts::RaisedCodeText.new(test: test),
+          ::Petitest::Texts::ErrorMessageText.new(test: test),
+          ::Petitest::Texts::FilteredBacktraceText.new(test: test),
         ].join("\n")
       end
 
       # @return [String]
       def heading
-        "#{ordinal_number}) #{test_signature}"
+        "#{ordinal_number}) #{test.class}##{test.runner.test_method_name}"
       end
 
       # @return [Integer]
       def ordinal_number
         index + 1
-      end
-
-      # @return [String]
-      def test_signature
-        test_case.test_signature
       end
     end
   end

@@ -1,5 +1,5 @@
 module Petitest
-  class TestCase
+  class TestRunner
     # @return [StandardError, nil]
     attr_accessor :error
 
@@ -9,22 +9,28 @@ module Petitest
     # @return [Time, nil]
     attr_accessor :started_at
 
-    # @return [Class]
-    attr_reader :test_group_class
+    # @return [Petitest::Test]
+    attr_reader :test
 
-    # @return [Petitest::TestMethod]
-    attr_reader :test_method
+    # @return [Petitest::TestGroup]
+    attr_reader :test_group
 
-    # @param test_group_class [Class]
-    # @param test_method [Petitest::TestMethod]
+    # @return [Symbol]
+    attr_reader :test_method_name
+
+    # @param test [Petitest::Test]
+    # @param test_group [Petitest::TestGroup]
+    # @param test_method_name [Symbol]
     def initialize(
-      test_group_class:,
-      test_method:
+      test:,
+      test_group:,
+      test_method_name:
     )
       @duration = nil
       @processed = false
-      @test_group_class = test_group_class
-      @test_method = test_method
+      @test = test
+      @test_group = test_group
+      @test_method_name = test_method_name
     end
 
     # @return [Array<String>, nil]
@@ -42,7 +48,7 @@ module Petitest
     # @return [String]
     def full_description
       [
-        test_group_class.full_description,
+        test.full_description,
         description,
       ].join(" ")
     end
@@ -93,7 +99,7 @@ module Petitest
 
     def run
       self.started_at = ::Time.now
-      test_group_class.new.send(test_method.method_name)
+      test.send(test_method_name)
       true
     rescue => error
       self.error = error
@@ -109,9 +115,16 @@ module Petitest
       false
     end
 
-    # @return [String]
-    def test_signature
-      [test_group_class, test_method.method_name].join("#")
+    # @return [Petitest::TestMethod]
+    def test_method
+      @test_method ||= begin
+        source_location = test.public_method(test_method_name).source_location
+        ::Petitest::TestMethod.new(
+          line_number: source_location[0],
+          method_name: test_method_name,
+          path: source_location[1],
+        )
+      end
     end
   end
 end

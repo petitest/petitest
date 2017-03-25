@@ -29,36 +29,16 @@ gem install petitest
 
 ## Usage
 
-### 1. Write test cases
+### 1. Write tests
 
-Define a child class of `Petitest::TestGroup` with `#test_xxx` methods.
+Define a child class of `Petitest::Test` with `#test_xxx` methods.
 
 ```ruby
 require "petitest/autorun"
 
-class Sometest < Petitest::TestGroup
-  def test_empty_string
-    assert("")
-  end
-
-  def test_false
-    assert(false)
-  end
-
-  def test_nil
-    assert(nil)
-  end
-
-  def test_raise
-    raise
-  end
-
-  def test_true
-    assert(true)
-  end
-
-  def test_zero
-    assert(0)
+class ExampleTest < Petitest::Test
+  def test_addition
+    assert { 1 + 1 == 100 }
   end
 end
 ```
@@ -68,45 +48,38 @@ end
 Run your test file as a Ruby script:
 
 ```bash
-ruby test/sometest_test.rb
+ruby test/example_test.rb
 ```
 
 ```
-.FFF..
+PetitestTest
+  #test_one_plus_one_to_be_two
 
-Failures:
-
-  1) PetitestTest#test_false
-    assert(false)
-    Expected false to be truthy
-    # test/petitest_test.rb:9:in `test_false'
-
-  2) PetitestTest#test_nil
-    assert(nil)
-    Expected nil to be truthy
-    # test/petitest_test.rb:13:in `test_nil'
-
-  3) PetitestTest#test_raise
-    raise
-    RuntimeError
-
-    # test/petitest_test.rb:17:in `test_raise'
 
 Counts:
 
-  6 tests
-  3 passes
-  3 failures
+  1 tests
+  1 passes
+  0 failures
   0 skips
 
 Times:
 
-  Started:  2017-03-24T03:09:17.776418+09:00
-  Finished: 2017-03-24T03:09:17.776527+09:00
-  Total:    0.000109s
+  Started:  2017-03-25T15:29:21.243918+09:00
+  Finished: 2017-03-25T15:29:21.244149+09:00
+  Total:    0.000231s
 ```
 
-## Plug-ins
+## Subscriber events
+
+- `#before_running_test_plan(test_plan)`
+- `#before_running_test_group(test_group)`
+- `#before_running_test(test)`
+- `#after_running_test(test)`
+- `#after_running_test_group(test_group)`
+- `#after_running_test_plan(test_plan)`
+
+## Official plugins
 
 - https://github.com/petitest/petitest-assertions
 - https://github.com/petitest/petitest-power_assert
