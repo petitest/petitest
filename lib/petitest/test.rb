@@ -3,6 +3,8 @@ module Petitest
     TEST_METHOD_NAME_PREFIX = "test_"
 
     class << self
+      attr_accessor :current_description
+
       attr_writer :description
 
       attr_writer :metadata
@@ -15,6 +17,11 @@ module Petitest
       # @return [String]
       def description
         @description ||= name
+      end
+
+      # @return [Hash{Symbol => String}]
+      def description_by_method_name
+        @description_by_method_name ||= {}
       end
 
       # @return [Petitest::TestGroup]
@@ -38,6 +45,15 @@ module Petitest
         @metadata ||= {}
       end
 
+      # @note Override
+      def method_added(method_name)
+        super
+        if current_description && check_if_test_method_name(method_name)
+          description_by_method_name[method_name] = current_description
+          clear_current_description
+        end
+      end
+
       # @return [Array<Class>]
       def test_ancestors
         @test_ancestors ||= ancestors.each_with_object([]) do |klass, classes|
@@ -50,10 +66,10 @@ module Petitest
         end
       end
 
-      # @return [Array<String>]
+      # @return [Array<Symbol>]
       def test_method_names
-        public_instance_methods.map(&:to_s).select do |method_name|
-          method_name.start_with?(TEST_METHOD_NAME_PREFIX)
+        public_instance_methods.select do |method_name|
+          check_if_test_method_name(method_name)
         end
       end
 
@@ -61,6 +77,18 @@ module Petitest
         test_method_names.each do |method_name|
           undef_method(method_name)
         end
+      end
+
+      private
+
+      # @param method_name [Symbol]
+      # @return [Boolean]
+      def check_if_test_method_name(method_name)
+        method_name.to_s.start_with?(TEST_METHOD_NAME_PREFIX)
+      end
+
+      def clear_current_description
+        self.current_description = nil
       end
     end
 
@@ -86,6 +114,11 @@ module Petitest
           actual
         end
       end
+    end
+
+    # @param message [String, nil]
+    def skip(message = nil)
+      raise ::Petitest::AssertionSkipError.new(message)
     end
 
     # @return [Petitest::TestRunner]

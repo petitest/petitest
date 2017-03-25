@@ -82,7 +82,7 @@ echo $?
 
 ## Assertions
 
-For simplicity, only `#assert` is provided from this core library.
+Petitest provides only one assertion method, `#assert`.
 
 ```ruby
 assert { foo }
@@ -92,7 +92,7 @@ If you need more assertions, use plugins like [patitest-assertions](https://gith
 
 ## DSL
 
-If you want to use `#test` and `#sub_test` DSL, extend `Petitest::DSL` into your test class.
+If you want to use `#desc`, `#test` and `#sub_test` DSL, extend `Petitest::DSL` into your test class.
 
 ```ruby
 class ExampleTest < Petitest::Test
@@ -100,6 +100,11 @@ class ExampleTest < Petitest::Test
 
   test "foo" do
     assert { foo }
+  end
+
+  desc "fuba"
+  def test_fuba
+    assert { fuba }
   end
 
   sub_test "bar" do

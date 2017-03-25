@@ -1,5 +1,10 @@
 module Petitest
   module DSL
+    # @param current_description [String]
+    def desc(current_description)
+      self.current_description = current_description
+    end
+
     # @param description [String]
     # @param metadata [Hash{Symbol => Object}]
     def sub_test(description, metadata = {}, &block)
@@ -14,7 +19,8 @@ module Petitest
     # @param description [String]
     # @param metadata [Hash{Symbol => Object}]
     def test(description, metadata = {}, &block)
-      self.description(description)
+      block ||= -> { skip }
+      desc(description)
       define_method("test_#{description}", &block)
     end
   end

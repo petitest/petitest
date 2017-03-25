@@ -42,13 +42,13 @@ module Petitest
 
     # @return [String]
     def description
-      @description ||= "##{method_name}"
+      test.class.description_by_method_name[test_method_name] || "##{test_method_name}"
     end
 
     # @return [String]
     def full_description
       [
-        test.full_description,
+        test_group.full_description,
         description,
       ].join(" ")
     end
@@ -69,7 +69,7 @@ module Petitest
 
     # @return [Boolean]
     def failed?
-      processed? && !error.nil?
+      processed? && !skipped? && !error.nil?
     end
 
     # @return [Array<String>, nil]
@@ -87,9 +87,14 @@ module Petitest
       end
     end
 
+    # @note Override
+    def inspect
+      "#<#{self.class}>"
+    end
+
     # @return [Boolean]
     def passed?
-      processed? && error.nil?
+      processed? && !skipped? && !failed?
     end
 
     # @return [Boolean]
@@ -109,10 +114,9 @@ module Petitest
       @processed = true
     end
 
-    # @todo
     # @return [Boolean]
     def skipped?
-      false
+      processed? && error.is_a?(::Petitest::AssertionSkipError)
     end
 
     # @return [Petitest::TestMethod]

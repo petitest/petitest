@@ -1,4 +1,5 @@
 require "petitest/assertion_failure_error"
+require "petitest/assertion_skip_error"
 require "petitest/configuration"
 require "petitest/dsl"
 require "petitest/subscriber_concerns/output_concern"

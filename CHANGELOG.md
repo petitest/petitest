@@ -2,6 +2,7 @@
 
 - Add `Petitest::DSL`
 - Add `Petitest::TestRunner`
+- Add `Petitest::Test#skip`
 - Remove `Petitest::Test.nest_level`
 - Change `Petitest::Test.sub_test` to `Petitest::DSL#sub_test`
 - Change `Petitest::TestGroup` to `Petitest::Test`

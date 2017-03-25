@@ -13,6 +13,11 @@ module Petitest
       test_class.description
     end
 
+    # @return [String]
+    def full_description
+      test_class.test_ancestors.reverse.map(&:description).join(" ")
+    end
+
     # @return [Hash{Symbol => Object}]
     def metadata
       test_class.metadata

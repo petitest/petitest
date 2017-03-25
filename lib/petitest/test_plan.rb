@@ -10,7 +10,9 @@ module Petitest
 
     # @return [Boolean]
     def passed?
-      tests.map(&:runner).all?(&:passed?)
+      tests.map(&:runner).all? do |runner|
+        runner.passed? || runner.skipped?
+      end
     end
 
     def run
