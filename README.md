@@ -70,9 +70,23 @@ Times:
   Total:    0.000231s
 ```
 
+If any test failed, exit code 1 is returned, othewise 0.
+
+```bash
+echo $?
+```
+
+```
+0
+```
+
 ### Assertions
 
-Petitest provides only `#assert` for simplicity.
+Only `#assert` is provided for simplicity.
+
+```ruby
+assert { foo }
+```
 
 ### Configuration
 
@@ -102,6 +116,8 @@ Petitest.configuration.subscribers = [
 
 ### Color types
 
+These color types are available on color scheme configuration:
+
 - `:black`
 - `:blue`
 - `:bold`
@@ -114,11 +130,15 @@ Petitest.configuration.subscribers = [
 
 ### Subscribers
 
+These subscribers are provided by default:
+
 - `Petitest::Subscribers::DocumentReportSubscriber` (default)
 - `Petitest::Subscribers::JsonReportSubscriber`
 - `Petitest::Subscribers::ProgressReportSubscriber`
 
 ### Official Plugins
+
+Here are some official plugins for Petitest:
 
 - https://github.com/petitest/petitest-assertions
 - https://github.com/petitest/petitest-power_assert
@@ -130,10 +150,17 @@ Petitest.configuration.subscribers = [
 
 ```
 TestPlan
+|---Test 1
+|---Test 2
+|---Test 3
 |---TestGroup 1
 |   |---Test 1-1
 |   |---Test 1-2
-|   `---Test 1-3
+|   |---Test 1-3
+|   `---TestGroup1-1
+|       |---Test 1-1-1
+|       |---Test 1-1-2
+|       `---Test 1-1-3
 |---TestGroup2
 |   |---Test 2-1
 |   |---Test 2-2
@@ -141,8 +168,33 @@ TestPlan
 `---TestGroup3
     |---Test 3-1
     |---Test 3-2
-    `---Test 3-3
+    |---Test 3-3
+    `---TestGroup3-1
+        |---Test 3-1-1
+        |---Test 3-1-2
+        `---Test 3-1-3
 ```
+
+### Order
+
+1. Test 1
+1. Test 2
+1. Test 3
+1. Test 1-1
+1. Test 1-2
+1. Test 1-3
+1. Test 1-1-1
+1. Test 1-1-2
+1. Test 1-1-3
+1. Test 2-1
+1. Test 2-2
+1. Test 2-3
+1. Test 3-1
+1. Test 3-2
+1. Test 3-3
+1. Test 3-1-1
+1. Test 3-1-2
+1. Test 3-1-3
 
 ### Events
 
