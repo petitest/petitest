@@ -218,9 +218,6 @@ TestPlan
 
 ### Order
 
-1. Test 1
-1. Test 2
-1. Test 3
 1. Test 1-1
 1. Test 1-2
 1. Test 1-3
