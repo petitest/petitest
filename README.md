@@ -86,9 +86,7 @@ Require `"rake/testtask"` and initialize `Rake::TestTask` on your Rakefile like:
 
 ```ruby
 require "rake/testtask"
-Rake::TestTask.new do |task|
-  task.pattern = "test/**/*_test.rb"
-end
+Rake::TestTask.new
 ```
 
 Run `test` rake task that you defined in the above code to run all tests:
@@ -96,6 +94,8 @@ Run `test` rake task that you defined in the above code to run all tests:
 ```bash
 rake test
 ```
+
+Note that Rake::TestTask's default test file pattern is `test/test*.rb`.
 
 ## Assertions
 
